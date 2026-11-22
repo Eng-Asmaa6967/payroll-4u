@@ -46,6 +46,7 @@ input,select,textarea{width:100%;padding:12px;border-radius:12px;border:1px soli
 .h{background:var(--card);border:1px solid var(--ln);border-radius:14px;padding:12px;margin:8px 0;display:flex;justify-content:space-between;gap:8px}
 .h small{color:var(--mu);display:block}
 .toast{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));inset-inline:12px;max-width:500px;margin:auto;z-index:20;background:var(--card);border:1px solid var(--gold);border-radius:16px;padding:14px 16px;box-shadow:0 10px 30px rgba(0,0,0,.5);transform:translateY(-140%);transition:.4s}.toast.on{transform:none}.toast b{color:var(--gold2)}
+input{color-scheme:light dark}
 </style>
 </head>
 <body>
@@ -61,7 +62,8 @@ input,select,textarea{width:100%;padding:12px;border-radius:12px;border:1px soli
 <label>الاسم</label><input id="n">
 <label>الوظيفة</label><input id="j">
 <div class="g2"><div><label>المرتب (ج.م)</label><input id="s" type="number" inputmode="numeric"></div>
-<div><label>يوم القبض من الشهر</label><input id="d" type="number" min="1" max="31" inputmode="numeric"></div></div>
+<div><label>أول ميعاد قبض (اختار التاريخ)</label><input id="d" type="date"></div></div>
+<label>نغمة التنبيه</label><select id="tn"><option value="bell">🔔 جرس</option><option value="soft">🎵 هادئة</option><option value="alarm">⏰ منبه</option></select>
 <label>ذكّرني قبل القبض بكام يوم (0 = يوم القبض بس)</label><input id="r" type="number" min="0" max="10" value="1" inputmode="numeric">
 <div class="row"><button class="btn" id="sv" style="flex:1">حفظ</button><button class="btn g" data-x="ov1">إلغاء</button><button class="btn g" id="del" style="display:none;color:var(--bad)">حذف</button></div>
 </div></div>
@@ -83,7 +85,7 @@ var K='payroll_v1',S={e:[],p:[]},tab='e',edit=null,payId=null;
 try{var r=localStorage.getItem(K);if(r)S=JSON.parse(r)}catch(x){}
 S.e=S.e||[];S.p=S.p||[];S.l=S.l||[];
 function lg(a){S.l.push({t:new Date().toLocaleString('ar-EG'),a:a});if(S.l.length>500)S.l.shift()}
-function save(){try{localStorage.setItem(K,JSON.stringify(S))}catch(x){}}
+function save(){try{localStorage.setItem(K,JSON.stringify(S))}catch(x){}setTimeout(sched,0)}
 function $(i){return document.getElementById(i)}
 function esc(s){return String(s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
 function fm(n){return Number(n||0).toLocaleString('ar-EG')+' ج.م'}
@@ -91,6 +93,7 @@ var now=new Date(),Y=now.getFullYear(),M=now.getMonth(),T=now.getDate();
 var ck=Y+'-'+(M+1);
 function dim(y,m){return new Date(y,m+1,0).getDate()}
 function st(e){
+  if(e.start){var sp=e.start.split('-'),sy=+sp[0],sm=+sp[1]-1,sd=+sp[2];if(sy*12+sm>Y*12+M){var n0=Math.round((new Date(sy,sm,sd)-new Date(Y,M,T))/864e5);return{k:'warn',t:'أول قبض '+sd+'/'+(sm+1)+'/'+sy+' · باقي '+n0+' يوم',up:1,left:n0,soon:1,due:n0<=(+e.r||0)?1:0}}}
   var paid=S.p.some(function(p){return p.eid===e.id&&p.cycle===ck});
   var d=Math.min(e.day,dim(Y,M));
   if(paid){var ny=M==11?Y+1:Y,nm=(M+1)%12,nd=Math.min(e.day,dim(ny,nm));
@@ -118,13 +121,13 @@ function open_(i){$(i).classList.add('on')}
 document.querySelectorAll('[data-x]').forEach(function(b){b.onclick=function(){$(b.dataset.x).classList.remove('on')}});
 document.querySelectorAll('.tabs button').forEach(function(b){b.onclick=function(){tab=b.dataset.t;document.querySelectorAll('.tabs button').forEach(function(x){x.classList.toggle('on',x===b)});render()}});
 $('add').onclick=function(){edit=null;$('t1').textContent='إضافة موظف';['n','j','s','d'].forEach(function(i){$(i).value=''});$('r').value=1;$('del').style.display='none';open_('ov1')};
-window.openEdit=function(id){var e=S.e.filter(function(x){return x.id===id})[0];edit=id;$('t1').textContent='تعديل بيانات الموظف';$('n').value=e.name;$('j').value=e.job;$('s').value=e.salary;$('d').value=e.day;$('r').value=e.r||0;$('del').style.display='';open_('ov1')};
+window.openEdit=function(id){var e=S.e.filter(function(x){return x.id===id})[0];edit=id;$('t1').textContent='تعديل بيانات الموظف';$('n').value=e.name;$('j').value=e.job;$('s').value=e.salary;$('d').value=e.start||(Y+'-'+('0'+(M+1)).slice(-2)+'-'+('0'+Math.min(e.day,dim(Y,M))).slice(-2));$('r').value=e.r||0;$('del').style.display='';open_('ov1')};
 $('del').onclick=function(){var e=S.e.filter(function(x){return x.id===edit})[0];if(!e||!confirm('حذف الموظف '+e.name+'؟ (سجل دفعاته يفضل محفوظ)'))return;S.e=S.e.filter(function(x){return x.id!==edit});lg('حذف موظف: '+e.name);save();$('ov1').classList.remove('on');render()};
 $('sv').onclick=function(){
-  var n=$('n').value.trim(),s=+$('s').value,d=Math.round(+$('d').value);
-  if(!n||!(s>0)||!(d>=1&&d<=31)){alert('اكتب الاسم والمرتب ويوم القبض (1 إلى 31)');return}
-  if(edit){var e=S.e.filter(function(x){return x.id===edit})[0];e.name=n;e.job=$('j').value.trim();e.salary=s;e.day=d;e.r=+$('r').value||0;lg('تعديل بيانات: '+n+' · '+fm(s)+' · يوم '+d)}
-  else{S.e.push({id:'e'+Date.now(),name:n,job:$('j').value.trim(),salary:s,day:d,r:+$('r').value||0});lg('إضافة موظف: '+n+' · '+fm(s)+' · يوم '+d)}
+  var n=$('n').value.trim(),s=+$('s').value,ds=$('d').value,d=ds?+ds.split('-')[2]:0;
+  if(!n||!(s>0)||!(d>=1&&d<=31)){alert('اكتب الاسم والمرتب واختار تاريخ القبض');return}
+  if(edit){var e=S.e.filter(function(x){return x.id===edit})[0];e.name=n;e.job=$('j').value.trim();e.salary=s;e.day=d;e.start=ds;e.r=+$('r').value||0;lg('تعديل بيانات: '+n+' · '+fm(s)+' · يوم '+d)}
+  else{S.e.push({id:'e'+Date.now(),name:n,job:$('j').value.trim(),salary:s,day:d,start:ds,r:+$('r').value||0});lg('إضافة موظف: '+n+' · '+fm(s)+' · يوم '+d)}
   save();$('ov1').classList.remove('on');render();check();
 };
 window.openPay=function(id){var e=S.e.filter(function(x){return x.id===id})[0];payId=id;$('t2').textContent='سداد مرتب: '+e.name;$('pb').value=e.salary;$('pa').value=0;$('pd').value=0;$('pn').value='';calc();open_('ov2')};
@@ -138,7 +141,8 @@ $('pay').onclick=function(){
   S.p.push({id:'p'+Date.now(),eid:e.id,name:e.name,cycle:ck,base:+$('pb').value,bonus:+$('pa').value||0,ded:+$('pd').value||0,net:n,method:$('pm').value,note:$('pn').value.trim(),date:new Date().toLocaleDateString('ar-EG')});
   lg('سداد مرتب '+e.name+' · صافي '+fm(n)+' ('+$('pm').value+')');save();$('ov2').classList.remove('on');render();
 };
-function beep(){try{var a=new (window.AudioContext||window.webkitAudioContext)(),o=a.createOscillator(),g=a.createGain();o.frequency.value=880;g.gain.value=.15;o.connect(g);g.connect(a.destination);o.start();setTimeout(function(){o.stop()},350)}catch(x){}}
+var TONES={bell:[[880,0],[1175,.18],[1568,.36]],soft:[[523,0],[659,.22],[784,.44]],alarm:[[988,0],[740,.25],[988,.5],[740,.75]]};
+function beep(){try{var a=window._ac||(window._ac=new (window.AudioContext||window.webkitAudioContext)()),k=TONES[S.tone]||TONES.bell,t0=a.currentTime;if(a.state=='suspended')a.resume();k.forEach(function(n){var o=a.createOscillator(),g=a.createGain(),t=t0+n[1];o.type=S.tone=='alarm'?'square':'sine';o.frequency.value=n[0];g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.22,t+.02);g.gain.exponentialRampToValueAtTime(.001,t+.6);o.connect(g);g.connect(a.destination);o.start(t);o.stop(t+.65)})}catch(x){}}
 function toast(t,b){var z=$('toast');z.innerHTML='<b>'+esc(t)+'</b><div>'+esc(b)+'</div>';z.classList.add('on');setTimeout(function(){z.classList.remove('on')},6000)}
 function push(t,b){
   toast(t,b);beep();
@@ -166,7 +170,25 @@ function bellLabel(){var p=window.Notification?Notification.permission:'none';$(
 $('bell').onclick=function(){
   try{var q=Notification.requestPermission(function(){});if(q&&q.then)q.then(function(){bellLabel();push('تم التفعيل','هتوصلك تنبيهات المرتبات')})}catch(x){toast('غير مدعوم','المتصفح هنا مش بيدعم إشعارات النظام، التنبيه هيظهر داخل الصفحة')}
 };
-bellLabel();tick();setInterval(tick,60000);
+function sched(){
+  var L=window.Capacitor&&Capacitor.Plugins&&Capacitor.Plugins.LocalNotifications;
+  if(!L||!(Capacitor.isNativePlatform&&Capacitor.isNativePlatform()))return;
+  L.requestPermissions().then(function(){return L.getPending()}).then(function(r){return r.notifications.length?L.cancel({notifications:r.notifications}):0}).then(function(){
+    var list=[],id=1,n=new Date();
+    S.e.forEach(function(e){for(var k=0;k<3;k++){
+      var d=new Date(n.getFullYear(),n.getMonth()+k,1),dd=Math.min(e.day,dim(d.getFullYear(),d.getMonth())),cyc=d.getFullYear()+'-'+(d.getMonth()+1);
+      if(e.start){var sq=e.start.split('-');if(d.getFullYear()*12+d.getMonth()<(+sq[0])*12+(+sq[1]-1))continue}
+      if(S.p.some(function(p){return p.eid===e.id&&p.cycle===cyc}))continue;
+      var at=new Date(d.getFullYear(),d.getMonth(),dd,9,0);
+      (+e.r?[0,+e.r]:[0]).forEach(function(b){var t=new Date(at.getTime()-b*864e5);if(t>n)list.push({id:id++,title:'ميعاد قبض: '+e.name,body:'المرتب '+fm(e.salary)+(b?' - باقي '+b+' يوم':' - اليوم'),schedule:{at:t,allowWhileIdle:true}})})}});
+    if(list.length)L.schedule({notifications:list})
+  }).catch(function(){})
+}
+$('tn').value=S.tone||'bell';
+$('tn').onchange=function(){S.tone=this.value;save();beep();toast('تم اختيار النغمة','دي النغمة اللي هتسمعها مع التنبيه')};
+$('d').onclick=function(){try{this.showPicker()}catch(x){}};
+$('d').onchange=function(){var v=this.value;if(!v)return;var q=v.split('-'),nm=$('n').value.trim()||'اسم الموظف',sl=+$('s').value;push('🔔 معاينة: ميعاد قبض '+nm,'المرتب '+(sl?fm(sl):'—')+' · يوم '+(+q[2])+' من كل شهر (أول قبض '+(+q[2])+'/'+(+q[1])+'/'+q[0]+')')};
+bellLabel();tick();sched();setInterval(tick,60000);
 document.addEventListener('visibilitychange',function(){if(!document.hidden)tick()});
 </script>
 </body>

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0d0f14"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="المرتبات">
+<title>إدارة المرتبات</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0d0f14;--card:#171a22;--card2:#1e222c;--tx:#f3efe4;--mu:#9aa0ad;--gold:#d4af6a;--gold2:#f1d99b;--ok:#4cc38a;--warn:#e8a94a;--bad:#e5645f;--ln:#2a2f3b;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#f6f2e9;--card:#fff;--card2:#faf6ec;--tx:#1d1a14;--mu:#6d6a60;--gold:#a8802f;--gold2:#8a6718;--ln:#e6dfcc}}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:Cairo,Tahoma,sans-serif;max-width:640px;margin:auto;padding:0 14px 90px}
+header{padding:22px 4px 8px;display:flex;justify-content:space-between;align-items:center}
+h1{margin:0;font-size:22px;font-weight:800;background:linear-gradient(90deg,var(--gold2),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{color:var(--mu);font-size:12px}
+.btn{border:0;border-radius:12px;padding:10px 16px;font:700 14px Cairo,Tahoma;cursor:pointer;color:#1a1408;background:linear-gradient(135deg,var(--gold2),var(--gold))}
+.btn.g{background:var(--card2);color:var(--tx);border:1px solid var(--ln)}
+.btn.s{padding:7px 12px;font-size:13px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}
+.st{background:var(--card);border:1px solid var(--ln);border-radius:14px;padding:12px 8px;text-align:center}
+.st b{display:block;font-size:16px;color:var(--gold)}.st span{font-size:11px;color:var(--mu)}
+.alert{border-radius:16px;padding:14px;margin:8px 0;display:flex;gap:10px;align-items:center;justify-content:space-between;border:1px solid var(--warn);background:linear-gradient(135deg,rgba(232,169,74,.16),rgba(212,175,106,.05))}
+.alert.bad{border-color:var(--bad);background:rgba(229,100,95,.12)}
+.tabs{display:flex;gap:6px;margin:14px 0}.tabs button{flex:1;padding:10px;border-radius:12px;border:1px solid var(--ln);background:var(--card);color:var(--mu);font:700 14px Cairo}
+.tabs button.on{color:#1a1408;background:linear-gradient(135deg,var(--gold2),var(--gold));border-color:transparent}
+.emp{background:var(--card);border:1px solid var(--ln);border-radius:18px;padding:14px;margin:10px 0}
+.top{display:flex;gap:12px;align-items:center}
+.av{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:18px;color:#1a1408;background:linear-gradient(135deg,var(--gold2),var(--gold));flex:none}
+.nm{font-weight:700}.jb{font-size:12px;color:var(--mu)}
+.sal{margin-inline-start:auto;text-align:left;font-weight:800;color:var(--gold)}
+.row{display:flex;justify-content:space-between;align-items:center;margin-top:12px;gap:8px}
+.tag{font-size:12px;padding:4px 10px;border-radius:99px;border:1px solid var(--ln);color:var(--mu)}
+.tag.ok{color:var(--ok);border-color:var(--ok)}.tag.warn{color:var(--warn);border-color:var(--warn)}.tag.bad{color:var(--bad);border-color:var(--bad)}
+.empty{text-align:center;color:var(--mu);padding:40px 10px}
+.fab{position:fixed;bottom:calc(18px + env(safe-area-inset-bottom,0px));inset-inline-start:18px;width:58px;height:58px;border-radius:50%;font-size:28px;border:0;color:#1a1408;background:linear-gradient(135deg,var(--gold2),var(--gold));box-shadow:0 8px 24px rgba(0,0,0,.4)}
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:flex-end;justify-content:center;z-index:9}
+.ov.on{display:flex}
+.sheet{background:var(--card);width:100%;max-width:640px;border-radius:22px 22px 0 0;padding:20px 18px calc(20px + env(safe-area-inset-bottom,0px));border-top:2px solid var(--gold);max-height:92vh;overflow:auto}
+.sheet h2{margin:0 0 12px;font-size:18px;color:var(--gold)}
+label{display:block;font-size:12px;color:var(--mu);margin:10px 0 4px}
+input,select,textarea{width:100%;padding:12px;border-radius:12px;border:1px solid var(--ln);background:var(--card2);color:var(--tx);font:600 15px Cairo,Tahoma}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.net{margin:14px 0;padding:14px;border-radius:14px;background:var(--card2);border:1px dashed var(--gold);text-align:center}
+.net b{display:block;font-size:26px;color:var(--gold2)}
+.h{background:var(--card);border:1px solid var(--ln);border-radius:14px;padding:12px;margin:8px 0;display:flex;justify-content:space-between;gap:8px}
+.h small{color:var(--mu);display:block}
+.toast{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));inset-inline:12px;max-width:500px;margin:auto;z-index:20;background:var(--card);border:1px solid var(--gold);border-radius:16px;padding:14px 16px;box-shadow:0 10px 30px rgba(0,0,0,.5);transform:translateY(-140%);transition:.4s}.toast.on{transform:none}.toast b{color:var(--gold2)}
+</style>
+</head>
+<body>
+<header><div><h1>◆ إدارة المرتبات</h1><div class="sub" id="today"></div></div><div style="display:flex;flex-direction:column;gap:6px"><button class="btn g s" id="bell">🔔 تفعيل التنبيهات</button><button class="btn s" id="test">🧪 تجربة تنبيه</button></div></header>
+<div id="alerts"></div>
+<div class="stats" id="stats"></div>
+<div class="tabs"><button class="on" data-t="e">الموظفين</button><button data-t="h">الدفعات</button><button data-t="l">سجل الحركات</button></div>
+<div id="list"></div>
+<button class="fab" id="add" aria-label="إضافة موظف">+</button>
+
+<div class="ov" id="ov1"><div class="sheet">
+<h2 id="t1">إضافة موظف</h2>
+<label>الاسم</label><input id="n">
+<label>الوظيفة</label><input id="j">
+<div class="g2"><div><label>المرتب (ج.م)</label><input id="s" type="number" inputmode="numeric"></div>
+<div><label>يوم القبض من الشهر</label><input id="d" type="number" min="1" max="31" inputmode="numeric"></div></div>
+<label>ذكّرني قبل القبض بكام يوم (0 = يوم القبض بس)</label><input id="r" type="number" min="0" max="10" value="1" inputmode="numeric">
+<div class="row"><button class="btn" id="sv" style="flex:1">حفظ</button><button class="btn g" data-x="ov1">إلغاء</button><button class="btn g" id="del" style="display:none;color:var(--bad)">حذف</button></div>
+</div></div>
+
+<div class="ov" id="ov2"><div class="sheet">
+<h2 id="t2">سداد مرتب</h2>
+<div class="g2"><div><label>المرتب الأساسي</label><input id="pb" type="number" readonly></div>
+<div><label>مكافأة / زيادة</label><input id="pa" type="number" value="0" inputmode="numeric"></div></div>
+<div class="g2"><div><label>خصم / سلفة</label><input id="pd" type="number" value="0" inputmode="numeric"></div>
+<div><label>طريقة الدفع</label><select id="pm"><option>كاش</option><option>تحويل بنكي</option><option>فودافون كاش</option><option>إنستاباي</option></select></div></div>
+<label>ملاحظة</label><input id="pn">
+<div class="net">صافي المبلغ المطلوب دفعه<b id="pnet"></b></div>
+<div class="row"><button class="btn" id="pay" style="flex:1">✓ تأكيد السداد</button><button class="btn g" data-x="ov2">إلغاء</button></div>
+</div></div>
+
+<div class="toast" id="toast"></div>
+<script>
+var K='payroll_v1',S={e:[],p:[]},tab='e',edit=null,payId=null;
+try{var r=localStorage.getItem(K);if(r)S=JSON.parse(r)}catch(x){}
+S.e=S.e||[];S.p=S.p||[];S.l=S.l||[];
+function lg(a){S.l.push({t:new Date().toLocaleString('ar-EG'),a:a});if(S.l.length>500)S.l.shift()}
+function save(){try{localStorage.setItem(K,JSON.stringify(S))}catch(x){}}
+function $(i){return document.getElementById(i)}
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function fm(n){return Number(n||0).toLocaleString('ar-EG')+' ج.م'}
+var now=new Date(),Y=now.getFullYear(),M=now.getMonth(),T=now.getDate();
+var ck=Y+'-'+(M+1);
+function dim(y,m){return new Date(y,m+1,0).getDate()}
+function st(e){
+  var paid=S.p.some(function(p){return p.eid===e.id&&p.cycle===ck});
+  var d=Math.min(e.day,dim(Y,M));
+  if(paid){var ny=M==11?Y+1:Y,nm=(M+1)%12,nd=Math.min(e.day,dim(ny,nm));
+    var diff=Math.round((new Date(ny,nm,nd)-new Date(Y,M,T))/864e5);
+    return{k:'ok',t:'تم الصرف ✓ · القادم بعد '+diff+' يوم'}}
+  if(T<d)return{k:'warn',t:'يوم '+d+' · باقي '+(d-T)+' يوم',up:1,left:d-T,soon:1,due:(d-T)<=(+e.r||0)?1:0};
+  if(T==d)return{k:'warn',t:'اليوم ميعاد القبض',due:1};
+  return{k:'bad',t:'متأخر '+(T-d)+' يوم',due:1,late:1};
+}
+function render(){
+  $('today').textContent=now.toLocaleDateString('ar-EG',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  var tot=0,paidSum=0,due=[];
+  S.e.forEach(function(e){tot+=+e.salary;var s=st(e);if(s.k=='ok'){var p=S.p.filter(function(p){return p.eid===e.id&&p.cycle===ck})[0];paidSum+=p?p.net:0}if(s.due)due.push([e,s])});
+  $('stats').innerHTML='<div class="st"><b>'+fm(tot)+'</b><span>إجمالي المرتبات</span></div><div class="st"><b>'+fm(paidSum)+'</b><span>تم صرفه هذا الشهر</span></div><div class="st"><b>'+S.e.length+'</b><span>عدد الموظفين</span></div>';
+  $('alerts').innerHTML=due.map(function(x){return '<div class="alert'+(x[1].late?' bad':'')+'"><div>🔔 <b>'+esc(x[0].name)+'</b><div class="sub">'+(x[1].late?'مرتبه متأخر · ':x[1].soon?'باقي '+x[1].left+' يوم على القبض · ':'اليوم ميعاد قبضه · ')+fm(x[0].salary)+'</div></div><button class="btn s" onclick="openPay(\''+x[0].id+'\')">سداد</button></div>'}).join('');
+  if(tab=='e'){
+    $('list').innerHTML=S.e.length?S.e.map(function(e){var s=st(e);return '<div class="emp"><div class="top"><div class="av">'+esc(e.name.charAt(0))+'</div><div><div class="nm">'+esc(e.name)+'</div><div class="jb">'+esc(e.job||'—')+'</div></div><div class="sal">'+fm(e.salary)+'</div></div><div class="row"><span class="tag '+s.k+'">'+s.t+'</span><span><button class="btn g s" onclick="openEdit(\''+e.id+'\')">تعديل</button> '+(s.k!='ok'?'<button class="btn s" onclick="openPay(\''+e.id+'\')">سداد</button>':'')+'</span></div></div>'}).join(''):'<div class="empty">لا يوجد موظفين بعد<br>اضغط + لإضافة أول موظف</div>';
+  }else if(tab=='l'){
+    $('list').innerHTML='<div class="emp"><div class="sub">نسخة احتياطية: اضغط "نسخ" واحفظ النص في مكان آمن، ولاسترجاعه الصقه هنا واضغط "استرجاع"</div><textarea id="bk" rows="3" style="margin-top:8px"></textarea><div class="row"><button class="btn s" onclick="bkup()">نسخ البيانات</button><button class="btn g s" onclick="rest()">استرجاع</button></div></div>'+(S.l.length?S.l.slice().reverse().map(function(g){return '<div class="h"><div><b>'+esc(g.a)+'</b><small>'+g.t+'</small></div></div>'}).join(''):'<div class="empty">لا توجد حركات مسجلة</div>');
+  }else{
+    $('list').innerHTML=S.p.length?S.p.slice().reverse().map(function(p){return '<div class="h"><div><b>'+esc(p.name)+'</b><small>'+p.date+' · '+esc(p.method)+(p.note?' · '+esc(p.note):'')+'</small><small>أساسي '+fm(p.base)+' · مكافأة '+fm(p.bonus)+' · خصم '+fm(p.ded)+'</small></div><b style="color:var(--ok)">'+fm(p.net)+'</b></div>'}).join(''):'<div class="empty">لا توجد دفعات مسجلة</div>';
+  }
+}
+function open_(i){$(i).classList.add('on')}
+document.querySelectorAll('[data-x]').forEach(function(b){b.onclick=function(){$(b.dataset.x).classList.remove('on')}});
+document.querySelectorAll('.tabs button').forEach(function(b){b.onclick=function(){tab=b.dataset.t;document.querySelectorAll('.tabs button').forEach(function(x){x.classList.toggle('on',x===b)});render()}});
+$('add').onclick=function(){edit=null;$('t1').textContent='إضافة موظف';['n','j','s','d'].forEach(function(i){$(i).value=''});$('r').value=1;$('del').style.display='none';open_('ov1')};
+window.openEdit=function(id){var e=S.e.filter(function(x){return x.id===id})[0];edit=id;$('t1').textContent='تعديل بيانات الموظف';$('n').value=e.name;$('j').value=e.job;$('s').value=e.salary;$('d').value=e.day;$('r').value=e.r||0;$('del').style.display='';open_('ov1')};
+$('del').onclick=function(){var e=S.e.filter(function(x){return x.id===edit})[0];if(!e||!confirm('حذف الموظف '+e.name+'؟ (سجل دفعاته يفضل محفوظ)'))return;S.e=S.e.filter(function(x){return x.id!==edit});lg('حذف موظف: '+e.name);save();$('ov1').classList.remove('on');render()};
+$('sv').onclick=function(){
+  var n=$('n').value.trim(),s=+$('s').value,d=Math.round(+$('d').value);
+  if(!n||!(s>0)||!(d>=1&&d<=31)){alert('اكتب الاسم والمرتب ويوم القبض (1 إلى 31)');return}
+  if(edit){var e=S.e.filter(function(x){return x.id===edit})[0];e.name=n;e.job=$('j').value.trim();e.salary=s;e.day=d;e.r=+$('r').value||0;lg('تعديل بيانات: '+n+' · '+fm(s)+' · يوم '+d)}
+  else{S.e.push({id:'e'+Date.now(),name:n,job:$('j').value.trim(),salary:s,day:d,r:+$('r').value||0});lg('إضافة موظف: '+n+' · '+fm(s)+' · يوم '+d)}
+  save();$('ov1').classList.remove('on');render();check();
+};
+window.openPay=function(id){var e=S.e.filter(function(x){return x.id===id})[0];payId=id;$('t2').textContent='سداد مرتب: '+e.name;$('pb').value=e.salary;$('pa').value=0;$('pd').value=0;$('pn').value='';calc();open_('ov2')};
+function net(){return (+$('pb').value)+(+$('pa').value||0)-(+$('pd').value||0)}
+function calc(){$('pnet').textContent=fm(net())}
+['pa','pd'].forEach(function(i){$(i).oninput=calc});
+$('pay').onclick=function(){
+  var e=S.e.filter(function(x){return x.id===payId})[0];if(!e)return;
+  var n=net();if(n<0){alert('الخصم أكبر من المرتب');return}
+  if(!confirm('تأكيد دفع '+fm(n)+' إلى '+e.name+'؟'))return;
+  S.p.push({id:'p'+Date.now(),eid:e.id,name:e.name,cycle:ck,base:+$('pb').value,bonus:+$('pa').value||0,ded:+$('pd').value||0,net:n,method:$('pm').value,note:$('pn').value.trim(),date:new Date().toLocaleDateString('ar-EG')});
+  lg('سداد مرتب '+e.name+' · صافي '+fm(n)+' ('+$('pm').value+')');save();$('ov2').classList.remove('on');render();
+};
+function beep(){try{var a=new (window.AudioContext||window.webkitAudioContext)(),o=a.createOscillator(),g=a.createGain();o.frequency.value=880;g.gain.value=.15;o.connect(g);g.connect(a.destination);o.start();setTimeout(function(){o.stop()},350)}catch(x){}}
+function toast(t,b){var z=$('toast');z.innerHTML='<b>'+esc(t)+'</b><div>'+esc(b)+'</div>';z.classList.add('on');setTimeout(function(){z.classList.remove('on')},6000)}
+function push(t,b){
+  toast(t,b);beep();
+  try{navigator.vibrate&&navigator.vibrate([200,100,200])}catch(x){}
+  try{document.title='🔔 '+t}catch(x){}
+  try{
+    if(!('Notification' in window)||Notification.permission!=='granted')return;
+    if(navigator.serviceWorker&&navigator.serviceWorker.getRegistration){
+      navigator.serviceWorker.getRegistration().then(function(r){if(r)r.showNotification(t,{body:b,vibrate:[200,100,200]});else new Notification(t,{body:b})}).catch(function(){})
+    }else new Notification(t,{body:b});
+  }catch(x){}
+}
+function check(){
+  var seen={},day=new Date().toDateString(),n={};
+  try{seen=JSON.parse(localStorage.getItem('pr_seen')||'{}')}catch(x){}
+  S.e.forEach(function(e){var s=st(e);if(!s.due)return;var k=e.id+'|'+day;n[k]=1;if(seen[k])return;
+    push('ميعاد قبض: '+e.name,'المرتب '+fm(e.salary)+(s.late?' (متأخر)':s.soon?' - باقي '+s.left+' يوم':' - اليوم'))});
+  try{localStorage.setItem('pr_seen',JSON.stringify(n))}catch(x){}
+}
+function tick(){now=new Date();Y=now.getFullYear();M=now.getMonth();T=now.getDate();ck=Y+'-'+(M+1);if(!(tab=='l'&&$('bk')&&$('bk').value))render();check()}
+window.bkup=function(){var t=JSON.stringify(S);$('bk').value=t;try{navigator.clipboard.writeText(t)}catch(x){}$('bk').select()};
+window.rest=function(){try{var o=JSON.parse($('bk').value);if(!o.e||!o.p)throw 0;if(!confirm('هيتم استبدال كل البيانات الحالية. متأكد؟'))return;S=o;S.l=S.l||[];lg('استرجاع نسخة احتياطية');save();$('bk').value='';render()}catch(x){alert('النص غير صحيح')}};
+$('test').onclick=function(){push('تجربة تنبيه','كده بيظهر لك تنبيه ميعاد القبض 🔔')};
+function bellLabel(){var p=window.Notification?Notification.permission:'none';$('bell').textContent=p==='granted'?'🔔 التنبيهات مفعّلة':p==='denied'?'🔕 التنبيهات ممنوعة':'🔔 تفعيل التنبيهات'}
+$('bell').onclick=function(){
+  try{var q=Notification.requestPermission(function(){});if(q&&q.then)q.then(function(){bellLabel();push('تم التفعيل','هتوصلك تنبيهات المرتبات')})}catch(x){toast('غير مدعوم','المتصفح هنا مش بيدعم إشعارات النظام، التنبيه هيظهر داخل الصفحة')}
+};
+bellLabel();tick();setInterval(tick,60000);
+document.addEventListener('visibilitychange',function(){if(!document.hidden)tick()});
+</script>
+</body>
+</html>

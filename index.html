@@ -87,7 +87,7 @@ body.locked #login{display:grid}
 <div class="acts"><button class="btn g s" id="bell">🔔 تفعيل التنبيهات</button><button class="btn s" id="test">🧪 تجربة تنبيه</button><button class="btn g s" id="lo">🔒 خروج</button></div>
 <div id="alerts"></div>
 <div class="stats" id="stats"></div>
-<div class="tabs"><button class="on" data-t="e"><i>👥</i>الموظفين</button><button data-t="h"><i>💳</i>الدفعات</button><button data-t="l"><i>🕘</i>السجل والنسخ</button></div>
+<div class="tabs"><button class="on" data-t="e"><i>👥</i>الموظفين</button><button data-t="h"><i>💳</i>الدفعات</button><button data-t="l"><i>⚙️</i>الإعدادات</button></div>
 <div id="list"></div>
 <button class="fab" id="add"><span>＋</span>موظف جديد</button>
 
@@ -163,7 +163,7 @@ function render(){
   if(tab=='e'){
     $('list').innerHTML=S.e.length?S.e.map(function(e){var s=st(e);return '<div class="emp"><div class="top"><div class="av">'+esc(e.name.charAt(0))+'</div><div><div class="nm">'+esc(e.name)+'</div><div class="jb">'+esc(e.job||'—')+'</div></div><div class="sal">'+fm(e.salary)+'</div></div><div class="row"><span class="tag '+s.k+'">'+s.t+'</span><span><button class="btn g s" onclick="openX(\''+e.id+'\')">⏱ إضافي</button> <button class="btn g s" onclick="openRep(\''+e.id+'\')">📄 تقرير</button> <button class="btn g s" onclick="openEdit(\''+e.id+'\')">تعديل</button> '+(s.k!='ok'?'<button class="btn s" onclick="openPay(\''+e.id+'\')">سداد</button>':'')+'</span></div></div>'}).join(''):'<div class="empty">لا يوجد موظفين بعد<br>اضغط + لإضافة أول موظف</div>';
   }else if(tab=='l'){
-    $('list').innerHTML='<div class="emp"><div class="sub">نسخة احتياطية: اضغط "نسخ" واحفظ النص في مكان آمن، ولاسترجاعه الصقه هنا واضغط "استرجاع"</div><textarea id="bk" rows="3" style="margin-top:8px"></textarea><div class="row"><button class="btn s" onclick="bkup()">نسخ البيانات</button><button class="btn g s" onclick="rest()">استرجاع</button><button class="btn g s" onclick="dlb()">⬇ ملف</button><button class="btn g s" onclick="fl.click()">⬆ رفع ملف</button><input type="file" id="fl" accept=".json" style="display:none" onchange="rf(this)"></div></div>'+(S.l.length?S.l.slice().reverse().map(function(g){return '<div class="h"><div><b>'+esc(g.a)+'</b><small>'+g.t+'</small></div></div>'}).join(''):'<div class="empty">لا توجد حركات مسجلة</div>');
+    $('list').innerHTML='<div class="emp"><div class="nm">⚙️ النسخ الاحتياطي والبيانات</div><div class="sub" style="margin:4px 0 12px">كل تعديل بيتحفظ تلقائياً على نفس الجهاز. احتفظ بنسخة احتياطية خارج الجهاز عند الحاجة.</div><button class="btn s" style="width:100%" onclick="dlb()">⬇ حفظ نسخة احتياطية الآن</button><div class="sub" id="backupHint" style="margin:8px 0 12px">سيتم تنزيل ملف JSON باسم يتضمن تاريخ ووقت إنشاء النسخة.</div><button class="btn g s" style="width:100%" onclick="fl.click()">⬆ استرجاع نسخة من ملف</button><input type="file" id="fl" accept=".json,application/json" style="display:none" onchange="rf(this)"><div style="height:1px;background:var(--ln);margin:16px 0"></div><div class="nm">👤 الحساب</div><div class="sub" style="margin:4px 0 10px">تغيير المستخدم يمسح بيانات المستخدم الحالي من هذا الجهاز ويبدأ إعداد حساب جديد.</div><button class="btn g s" style="width:100%" onclick="chu()">👤 إنهاء الحساب الحالي والبدء بمستخدم جديد</button><button class="btn g s" style="width:100%;margin-top:8px;color:var(--bad);border-color:var(--bad)" onclick="wipe()">🗑 مسح كل البيانات والبدء من الصفر</button><div class="sub" style="margin-top:12px;color:var(--warn)">تنبيه: عند رفع الموقع على GitHub Pages، البيانات تُحفظ في متصفح وجهاز كل مستخدم فقط، ولا تنتقل تلقائياً بين الأجهزة أو الأشخاص. للمزامنة المشتركة تحتاج قاعدة بيانات وخادماً.</div></div><div class="nm" style="margin:16px 4px 4px">🕘 سجل الحركات</div>'+(S.l.length?S.l.slice().reverse().map(function(g){return '<div class="h"><div><b>'+esc(g.a)+'</b><small>'+g.t+'</small></div></div>'}).join(''):'<div class="empty">لا توجد حركات مسجلة</div>');
   }else{
     $('list').innerHTML=S.p.length?S.p.slice().reverse().map(function(p){return '<div class="h"><div><b>'+esc(p.name)+'</b><small>'+p.date+' · '+esc(p.method)+(p.note?' · '+esc(p.note):'')+'</small><small>أساسي '+fm(p.base)+' · مكافأة '+fm(p.bonus)+' · خصم '+fm(p.ded)+'</small></div><b style="color:var(--ok)">'+fm(p.net)+'</b></div>'}).join(''):'<div class="empty">لا توجد دفعات مسجلة</div>';
   }
@@ -216,8 +216,6 @@ function check(){if(document.body.classList.contains('locked'))return;
   try{localStorage.setItem('pr_seen',JSON.stringify(n))}catch(x){}
 }
 function tick(){now=new Date();Y=now.getFullYear();M=now.getMonth();T=now.getDate();ck=Y+'-'+(M+1);if(!(tab=='l'&&$('bk')&&$('bk').value))render();check()}
-window.bkup=function(){var t=JSON.stringify(S);$('bk').value=t;try{navigator.clipboard.writeText(t)}catch(x){}$('bk').select()};
-window.rest=function(){try{var o=JSON.parse($('bk').value);if(!o.e||!o.p)throw 0;cf('هيتم استبدال كل البيانات الحالية. متأكد؟',function(){S=o;S.l=S.l||[];S.x=S.x||[];S.p=S.p||[];lg('استرجاع نسخة احتياطية');save();$('bk').value='';render()})}catch(x){al('النص غير صحيح')}};
 $('test').onclick=function(){push('تجربة تنبيه','كده بيظهر لك تنبيه ميعاد القبض 🔔')};
 function bellLabel(){var p=window.Notification?Notification.permission:'none';$('bell').textContent=p==='granted'?'🔔 التنبيهات مفعّلة':p==='denied'?'🔕 التنبيهات ممنوعة':'🔔 تفعيل التنبيهات'}
 $('bell').onclick=function(){
@@ -263,8 +261,6 @@ window.dx=function(id){var x=S.x.filter(function(z){return z.id===id})[0];if(!x)
 $('rs').onclick=function(){var e=emp(RE);if(!e.ph){al('سجّل رقم واتساب الموظف من زرار تعديل أولاً');return}
   window.open('https://wa.me/'+e.ph+'?text='+encodeURIComponent(msg()),'_blank');lg('إرسال كشف واتساب: '+e.name+' · '+$('rm').value);save()};
 $('rc').onclick=function(){var t=msg();try{navigator.clipboard.writeText(t);toast('تم النسخ','الصق الرسالة في أي مكان')}catch(x){al(t)}};
-window.dlb=function(){var b=new Blob([JSON.stringify(S)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='payroll-backup-'+td()+'.json';document.body.appendChild(a);a.click();a.remove();lg('تحميل نسخة احتياطية');save()};
-window.rf=function(i){var f=i.files[0];if(!f)return;var r=new FileReader();r.onload=function(){$('bk').value=r.result;rest()};r.readAsText(f)};
 $('tn').value=S.tone||'bell';
 $('tn').onchange=function(){S.tone=this.value;save();beep();toast('تم اختيار النغمة','دي النغمة اللي هتسمعها مع التنبيه')};
 $('d').onclick=function(){try{this.showPicker()}catch(x){}};
@@ -284,9 +280,13 @@ $('lgo').onclick=function(){var u=$('lu').value.trim().toLowerCase(),p=$('lp').v
 ['lu','lp','lp2'].forEach(function(i){$(i).onkeydown=function(e){if(e.key==='Enter')$('lgo').click()}});
 $('lo').onclick=function(){try{sessionStorage.removeItem('pr_in')}catch(x){}document.body.classList.add('locked');$('lp').value='';lockUI()};
 $('lfg').onclick=function(){cf('هيتم مسح كل البيانات (الموظفين والدفعات والسجل) وإنشاء حساب جديد. لو عندك نسخة احتياطية تقدر ترجعها بعد كده. متأكد؟',function(){try{localStorage.removeItem(K);localStorage.removeItem('pr_acc');localStorage.removeItem('pr_seen')}catch(x){}location.reload()})};
+window.dlb=function(){save();var d=new Date(),stamp=d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2)+'_'+('0'+d.getHours()).slice(-2)+'-'+('0'+d.getMinutes()).slice(-2)+'-'+('0'+d.getSeconds()).slice(-2),n='payroll-backup-'+stamp+'.json',b=new Blob([JSON.stringify(S,null,2)],{type:'application/json'}),u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download=n;document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u)},1000);lg('نسخة احتياطية: '+n);save();toast('✅ بدأ تنزيل النسخة الاحتياطية',n)};
+window.rf=function(i){var f=i.files[0];if(!f)return;var r=new FileReader();r.onload=function(){try{var o=JSON.parse(r.result);if(!o.e||!o.p)throw 0;cf('هيتم استبدال كل البيانات الحالية بالنسخة دي. متأكد؟',function(){S=o;S.e=S.e||[];S.p=S.p||[];S.l=S.l||[];S.x=S.x||[];lg('استرجاع نسخة احتياطية');save();render();toast('✅ تم الاسترجاع','رجعت البيانات من الملف')})}catch(x){al('الملف غير صالح')}};r.readAsText(f)};
+window.chu=function(){cf('سيتم إنهاء الحساب الحالي ومسح بياناته المحفوظة على هذا الجهاز (الموظفون والدفعات والإضافي والسجل)، ثم تظهر شاشة إنشاء حساب جديد للمستخدم التالي. خذ نسخة احتياطية أولاً إذا كنت تحتاج البيانات. هل تريد المتابعة؟',function(){try{localStorage.removeItem(K);localStorage.removeItem('pr_acc');localStorage.removeItem('pr_seen');sessionStorage.removeItem('pr_in')}catch(x){}location.reload()})};
+window.wipe=function(){cf('مسح نهائي لكل البيانات والحساب المحفوظ على هذا الجهاز، وسيبدأ البرنامج من شاشة إنشاء حساب جديد. لا يمكن التراجع عن المسح. تأكد من تنزيل نسخة احتياطية أولاً إذا كنت تحتاجها.',function(){try{localStorage.removeItem(K);localStorage.removeItem('pr_acc');localStorage.removeItem('pr_seen');sessionStorage.removeItem('pr_in')}catch(x){}location.reload()})};
 lockUI();try{if(ACC&&sessionStorage.getItem('pr_in')==='1')document.body.classList.remove('locked')}catch(x){}
 bellLabel();tick();sched();setInterval(tick,60000);
 document.addEventListener('visibilitychange',function(){if(!document.hidden)tick()});
 </script>
 </body>
-</html>
+</html>دلوقتي تمام. انا دلوقتي بقى عايزه ان هو يكون بيحفظ الداتا تلقائي، يعني الصفحه الاخيره اللي هي بتاعت نسخ واسترجاع او كده مش سهله ومش سلسه، فهيبسطها لي اكتر من كده ان هو مجرد ما اعمل نسخه احتياطيه يقوم راح حافظ لي الملف على طول تلقائي بتاريخ اللي انا طلبت بيه، بس لا ولا اقل. تاني حاجه انا عايزه ان يبقى في حاجه اسمها زرار اسمه مسح البيانات، يعني انا امسح خالص ويبتدي من اول وجديد وكل حاجه. تالت حاجة بقى ان هو لما انا اعمل ان انا الغي اليوزر بتاعي وادخل يوزر جديد، يعني انا دلوقتي كنت بجرب بس هو هيبقى مع حد تاني وهيعمل يوزر لوحده تاني. ,وهرفعه علي githup عدل الي طلبته فقط بدون ماتبوظ الكود وابعته تاني

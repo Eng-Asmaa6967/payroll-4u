@@ -72,6 +72,7 @@ body.locked #login{display:grid}
 .lc h2{margin:6px 0 2px;color:var(--gold)}.lc label{text-align:right}
 .er{color:var(--bad);font-size:13px;min-height:20px;margin-top:8px}
 .lk{background:none;border:0;color:var(--mu);font:600 12px Cairo,Tahoma,sans-serif;margin-top:10px;text-decoration:underline}
+@media(max-width:520px){body{padding-inline:10px}.hero{padding:12px}.logo{height:48px;max-width:76px}h1{font-size:18px}.acts{flex-wrap:wrap}.acts .btn{min-width:28%;padding:8px 6px;font-size:11px}.stats{gap:6px}.st{padding:10px 3px}.st b{font-size:13px}.st span{font-size:10px}.emp{padding:13px}.emp .row>span:last-child{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;width:100%}.emp .row .btn{width:100%;margin:0}.g2{gap:7px}.sheet{padding-inline:13px}.attTable{font-size:11px}.tabs{padding-inline:5px}.tabs button{font-size:10px}}
 </style>
 </head>
 <body class="locked">
@@ -126,23 +127,31 @@ body.locked #login{display:grid}
 </div></div>
 <div class="ov" id="ov4"><div class="sheet"><h2 id="t4">تقرير الموظف</h2>
 <label>الشهر</label><input id="rm" type="month"><div id="rb"></div>
-<div class="row"><button class="btn" id="rs" style="flex:1">📲 إرسال واتساب</button><button class="btn g s" id="rc">نسخ</button><button class="btn g" data-x="ov4">إغلاق</button></div>
+<div class="row" style="flex-wrap:wrap"><button class="btn" id="rsPay" style="flex:1">📲 مرتب + إضافي</button><button class="btn g" id="rsAtt" style="flex:1">🕘 الحضور والإجازات</button></div>
+<div class="row"><button class="btn g" id="rsAll" style="flex:1">📨 إرسال التقرير كامل</button><button class="btn g s" id="rc">نسخ التقرير</button><button class="btn g" data-x="ov4">إغلاق</button></div>
 </div></div>
 <div class="ov" id="ov5"><div class="sheet"><h2 id="t5">حضور وانصراف الموظف</h2>
-<div class="g2"><div><label>التاريخ</label><input id="adate" type="date"></div><div><label>الوقت المسجل</label><input id="atime" type="time"></div></div>
-<div class="g2"><div><label>بداية الدوام</label><input id="astart" type="time" value="10:00"></div><div><label>عدد ساعات العمل المطلوبة</label><input id="ahours" type="number" value="10" readonly></div></div>
-<div class="row"><button class="btn" id="ain" style="flex:1">🟢 تسجيل حضور</button><button class="btn" id="aout" style="flex:1">🔴 تسجيل انصراف</button></div>
-<div class="sub" style="margin-top:8px">التأخير يتحسب من بداية الدوام المحددة. وساعات العمل الإضافية تتحسب بعد إكمال 10 ساعات عمل في اليوم.</div>
+<div class="g2"><div><label>بداية الدوام</label><input id="astart" type="time" value="10:00"></div><div><label>ساعات العمل المطلوبة يوميًا</label><input id="ahours" type="number" value="10" readonly></div></div>
+<div class="sub" style="margin:8px 0 12px">اضغطي على الزر، وسيُسجل التاريخ والوقت الفعليان تلقائيًا لحظة الضغط.</div>
+<div class="row"><button class="btn" id="ain" style="flex:1">🟢 تسجيل حضور الآن</button><button class="btn" id="aout" style="flex:1">🔴 تسجيل انصراف الآن</button></div>
+<div class="sub" style="margin-top:8px">التأخير يتحسب من بداية الدوام المحددة (10:00 صباحًا افتراضيًا). وساعات العمل الفعلية والإضافية تظهر في التقرير.</div>
 <h2 style="margin-top:20px">📋 سجل الحضور والانصراف</h2><div id="attRows"></div>
 <h2 style="margin-top:20px">⏱ الإضافي المالي المسجل</h2><div id="attExtra"></div>
 <div class="row"><button class="btn g" data-x="ov5" style="flex:1">إغلاق</button></div>
+</div></div>
+<div class="ov" id="ov6"><div class="sheet"><h2 id="t6">تسجيل إجازة</h2>
+<label>نوع الإجازة</label><select id="lvType"><option value="سنوية">سنوية</option><option value="عارضة">عارضة</option><option value="مرضية">مرضية</option><option value="بدون أجر">بدون أجر</option><option value="أخرى">أخرى</option></select>
+<div class="g2"><div><label>من تاريخ</label><input id="lvFrom" type="date"></div><div><label>إلى تاريخ</label><input id="lvTo" type="date"></div></div>
+<label>ملاحظات / سبب الإجازة</label><input id="lvNote" placeholder="اختياري">
+<div class="row"><button class="btn" id="lvSave" style="flex:1">حفظ الإجازة</button><button class="btn g" data-x="ov6">إلغاء</button></div>
+<h2 style="margin-top:18px">الإجازات المسجلة</h2><div id="lvRows"></div>
 </div></div>
 <div class="ov" id="ovc" style="z-index:70"><div class="sheet" style="text-align:center"><div id="cm" style="font-size:16px;font-weight:700;line-height:1.9;margin:8px 0 14px;white-space:pre-wrap"></div><div class="row" id="cb"></div></div></div>
 <div class="toast" id="toast"></div>
 <script>
 var K='payroll_v1',S={e:[],p:[]},tab='e',edit=null,payId=null;
 try{var r=localStorage.getItem(K);if(r)S=JSON.parse(r)}catch(x){}
-S.e=S.e||[];S.p=S.p||[];S.l=S.l||[];S.x=S.x||[];S.attendance=S.attendance||[];S.workStart=S.workStart||'10:00';
+S.e=S.e||[];S.p=S.p||[];S.l=S.l||[];S.x=S.x||[];S.attendance=S.attendance||[];S.leaves=S.leaves||[];S.workStart=S.workStart||'10:00';
 function lg(a){S.l.push({t:new Date().toLocaleString('ar-EG'),a:a});if(S.l.length>500)S.l.shift()}
 function save(){try{localStorage.setItem(K,JSON.stringify(S));if(ACTIVE_USER)localStorage.setItem('pr_data_v2_'+ACTIVE_USER,JSON.stringify(S))}catch(x){}setTimeout(sched,0)}
 function $(i){return document.getElementById(i)}
@@ -171,7 +180,7 @@ function render(){
   $('stats').innerHTML='<div class="st"><b>'+fm(tot)+'</b><span>💼 إجمالي المرتبات</span></div><div class="st"><b>'+fm(paidSum)+'</b><span>✅ تم صرفه هذا الشهر</span></div><div class="st"><b>'+S.e.length+'</b><span>👥 عدد الموظفين</span></div>';
   $('alerts').innerHTML=due.map(function(x){return '<div class="alert'+(x[1].late?' bad':'')+'"><div>🔔 <b>'+esc(x[0].name)+'</b><div class="sub">'+(x[1].late?'مرتبه متأخر · ':x[1].soon?'باقي '+x[1].left+' يوم على القبض · ':'اليوم ميعاد قبضه · ')+fm(x[0].salary)+'</div></div><button class="btn s" onclick="openPay(\''+x[0].id+'\')">سداد</button></div>'}).join('');
   if(tab=='e'){
-    $('list').innerHTML=S.e.length?S.e.map(function(e){var s=st(e);return '<div class="emp"><div class="top"><div class="av">'+esc(e.name.charAt(0))+'</div><div><div class="nm tap" role="button" title="فتح سجل الحضور والانصراف" onclick="openAttendance(\''+e.id+'\')">'+esc(e.name)+'</div><div class="jb">'+esc(e.job||'—')+'</div></div><div class="sal">'+fm(e.salary)+'</div></div><div class="row"><span class="tag '+s.k+'">'+s.t+'</span><span><button class="btn g s" onclick="openAttendance(\''+e.id+'\')">🕘 حضور/انصراف</button> <button class="btn g s" onclick="openX(\''+e.id+'\')">⏱ إضافي</button> <button class="btn g s" onclick="openRep(\''+e.id+'\')">📄 تقرير</button> <button class="btn g s" onclick="openEdit(\''+e.id+'\')">تعديل</button> '+(s.k!='ok'?'<button class="btn s" onclick="openPay(\''+e.id+'\')">سداد</button>':'')+'</span></div></div>'}).join(''):'<div class="empty">لا يوجد موظفين بعد<br>اضغط + لإضافة أول موظف</div>';
+    $('list').innerHTML=S.e.length?S.e.map(function(e){var s=st(e);return '<div class="emp"><div class="top"><div class="av">'+esc(e.name.charAt(0))+'</div><div><div class="nm tap" role="button" title="فتح سجل الحضور والانصراف" onclick="openAttendance(\''+e.id+'\')">'+esc(e.name)+'</div><div class="jb">'+esc(e.job||'—')+'</div></div><div class="sal">'+fm(e.salary)+'</div></div><div class="row"><span class="tag '+s.k+'">'+s.t+'</span><span><button class="btn g s" onclick="openAttendance(\''+e.id+'\')">🕘 حضور/انصراف</button> <button class="btn g s" onclick="openX(\''+e.id+'\')">⏱ إضافي</button> <button class="btn g s" onclick="openRep(\''+e.id+'\')">📄 تقرير</button> <button class="btn g s" onclick="openLeave(\''+e.id+'\')">🌴 إجازة</button> <button class="btn g s" onclick="openEdit(\''+e.id+'\')">تعديل</button> '+(s.k!='ok'?'<button class="btn s" onclick="openPay(\''+e.id+'\')">سداد</button>':'')+'</span></div></div>'}).join(''):'<div class="empty">لا يوجد موظفين بعد<br>اضغط + لإضافة أول موظف</div>';
   }else if(tab=='l'){
     $('list').innerHTML='<div class="emp"><div class="nm">💾 حفظ البيانات والنسخ الاحتياطي</div><div class="sub" style="margin:5px 0 14px">الحفظ التلقائي شغال على نفس المتصفح. مش محتاجة تعملي حفظ يدوي بعد كل تعديل.</div><button class="btn s" style="width:100%;margin-bottom:9px" onclick="dlb()">⬇ تنزيل نسخة احتياطية على الجهاز</button><button class="btn g s" style="width:100%" onclick="fl.click()">⬆ استرجاع نسخة احتياطية</button><input type="file" id="fl" accept=".json,application/json" style="display:none" onchange="rf(this)"><div class="sub" style="margin-top:8px">النسخة ملف JSON باسم المستخدم وتاريخ ووقت التنزيل، وتقدري تحتفظي بيه في أي فولدر على جهازك.</div><div style="height:1px;background:var(--ln);margin:16px 0"></div><div class="nm">👤 المستخدمون</div><div class="sub" style="margin:5px 0 12px">كل مستخدم له بيانات منفصلة. تسجيل الخروج لا يحذف الحساب أو بياناته.</div><button class="btn g s" style="width:100%;margin-bottom:8px" onclick="chu()">＋ إنشاء مستخدم جديد</button><button class="btn g s" style="width:100%" onclick="logoutUser()">🔒 تسجيل الخروج</button><div style="height:1px;background:var(--ln);margin:16px 0"></div><div class="nm" style="color:var(--bad)">🗑 مسح كل البيانات</div><div class="sub" style="margin:5px 0 10px">يمسح كل حسابات المستخدمين والموظفين والمرتبات والحضور والإجازات من هذا المتصفح نهائياً، ثم يفتح إنشاء مستخدم جديد.</div><button class="btn g s" style="width:100%;color:var(--bad);border-color:var(--bad)" onclick="wipeAll()">مسح كل البيانات والبدء من جديد</button><div class="sub" style="margin-top:12px;color:var(--warn)">مهم: GitHub يستضيف ملفات الموقع فقط. البيانات محفوظة محلياً في نفس المتصفح والجهاز. لو فتحتي من جهاز أو متصفح آخر، نزّلي نسخة احتياطية من الأول ثم استرجعيها هناك.</div></div><div class="nm" style="margin:16px 4px 4px">🕘 سجل الحركات</div>'+(S.l.length?S.l.slice().reverse().map(function(g){return '<div class="h"><div><b>'+esc(g.a)+'</b><small>'+g.t+'</small></div></div>'}).join(''):'<div class="empty">لا توجد حركات مسجلة</div>');
   }else{
@@ -249,7 +258,7 @@ function emp(id){return S.e.filter(function(x){return x.id===id})[0]}
 function td(){var n=new Date();return n.getFullYear()+'-'+('0'+(n.getMonth()+1)).slice(-2)+'-'+('0'+n.getDate()).slice(-2)}
 function np(v){var d=String(v).replace(/\D/g,'');if(d.indexOf('00')==0)d=d.slice(2);else if(d.charAt(0)=='0')d='20'+d.slice(1);return d}
 function tm(t){try{return new Date('1970-01-01T'+t).toLocaleTimeString('ar-EG',{hour:'numeric',minute:'2-digit'})}catch(x){return t}}
-function xl(id,cy){return S.x.filter(function(x){return x.eid===id&&x.cycle===cy}).sort(function(a,b){return a.date<b.date?-1:1})}
+function xl(id,cy){var v=String(cy||'').split('-'),alt=v[0]+'-'+(+v[1]);return S.x.filter(function(x){return x.eid===id&&(x.cycle===cy||x.cycle===alt)}).sort(function(a,b){return a.date<b.date?-1:1})}
 function xsum(id,cy){return xl(id,cy).reduce(function(a,x){return a+x.amt},0)}
 var XE=null,RE=null;
 function xh(){var f=$('xf').value,t=$('xt').value;if(!f||!t){$('xhr').textContent='';return 0}var a=f.split(':'),b=t.split(':'),m=(+b[0]*60+ +b[1])-(+a[0]*60+ +a[1]);if(m<=0)m+=1440;var h=Math.round(m/6)/10;$('xhr').textContent='المدة: '+h+' ساعة';return h}
@@ -259,38 +268,58 @@ $('xs').onclick=function(){var e=emp(XE),a=+$('xa').value,y=$('xy').value.trim()
   var h=xh(),q=dt.split('-');S.x.push({id:'x'+Date.now(),eid:XE,date:dt,from:$('xf').value,to:$('xt').value,hrs:h,why:y,amt:a,cycle:q[0]+'-'+(+q[1])});
   lg('إضافي: '+e.name+' · '+y+' · '+h+' ساعة · '+fm(a));save();$('ov3').classList.remove('on');render();toast('تم التسجيل','زيادة '+fm(a)+' للموظف '+e.name)};
 var AE=null;
-function clockNow(){var d=new Date();return ('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2)}
+function clockNow(){var d=new Date();return ('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2)+':'+('0'+d.getSeconds()).slice(-2)}
 function mins(t){if(!t)return null;var a=t.split(':');return (+a[0])*60+(+a[1])}
 function durText(n){if(n==null)return '—';return Math.floor(n/60)+' س '+(n%60)+' د'}
-function attendanceDays(id){
-  var rows=S.attendance.filter(function(x){return x.eid===id});
-  var days={};rows.forEach(function(x){if(!days[x.date])days[x.date]={date:x.date,ins:[],outs:[]};(x.type==='in'?days[x.date].ins:days[x.date].outs).push(x.time)});
-  return Object.keys(days).sort().reverse().map(function(k){var d=days[k],first=d.ins.sort()[0]||'',last=d.outs.sort().slice(-1)[0]||'',start=mins(S.workStart||'10:00'),im=mins(first),om=mins(last),late=im==null?null:Math.max(0,im-start),worked=(im!=null&&om!=null)?om-im:null;if(worked!=null&&worked<0)worked+=1440;var extra=worked==null?null:Math.max(0,worked-600);return {date:k,first:first,last:last,late:late,worked:worked,extra:extra}})
+function attendanceDays(id,cycle){
+ var rows=S.attendance.filter(function(x){return x.eid===id&&(!cycle||x.date.slice(0,7)===cycle)}),days={};
+ rows.forEach(function(x){if(!days[x.date])days[x.date]={date:x.date,ins:[],outs:[]};(x.type==='in'?days[x.date].ins:days[x.date].outs).push(x.time)});
+ return Object.keys(days).sort().map(function(k){var d=days[k],first=d.ins.sort()[0]||'',last=d.outs.sort().slice(-1)[0]||'',start=mins(S.workStart||'10:00'),im=mins(first),om=mins(last),late=im==null?null:Math.max(0,im-start),worked=(im!=null&&om!=null)?om-im:null;if(worked!=null&&worked<0)worked+=1440;var extra=worked==null?null:Math.max(0,worked-600);return {date:k,first:first,last:last,late:late,worked:worked,extra:extra}}).reverse();
 }
 function attendanceRender(){
- var e=emp(AE);if(!e)return;
- var ds=attendanceDays(AE);
- $('attRows').innerHTML=ds.length?'<div class="attwrap"><table class="attTable"><thead><tr><th>التاريخ</th><th>الحضور</th><th>الانصراف</th><th>التأخير</th><th>ساعات العمل</th><th>بعد 10 ساعات</th></tr></thead><tbody>'+ds.map(function(d){return '<tr><td>'+esc(d.date)+'</td><td>'+(d.first?tm(d.first):'—')+'</td><td>'+(d.last?tm(d.last):'—')+'</td><td>'+(d.late==null?'—':(d.late?durText(d.late):'لا يوجد'))+'</td><td>'+durText(d.worked)+'</td><td>'+(d.extra==null?'—':durText(d.extra))+'</td></tr>'}).join('')+'</tbody></table></div>':'<div class="empty" style="padding:18px">لا يوجد حضور أو انصراف مسجل حتى الآن</div>';
+ var e=emp(AE);if(!e)return;var ds=attendanceDays(AE);
+ $('attRows').innerHTML=ds.length?'<div class="attwrap"><table class="attTable"><thead><tr><th>التاريخ</th><th>الحضور</th><th>الانصراف</th><th>التأخير</th><th>ساعات العمل</th><th>إضافي ساعات</th></tr></thead><tbody>'+ds.map(function(d){return '<tr><td>'+esc(d.date)+'</td><td>'+(d.first?tm(d.first):'—')+'</td><td>'+(d.last?tm(d.last):'—')+'</td><td>'+(d.late==null?'—':(d.late?durText(d.late):'لا يوجد'))+'</td><td>'+durText(d.worked)+'</td><td>'+(d.extra==null?'—':durText(d.extra))+'</td></tr>'}).join('')+'</tbody></table></div>':'<div class="empty" style="padding:18px">لا يوجد حضور أو انصراف مسجل حتى الآن</div>';
  var ex=S.x.filter(function(x){return x.eid===AE}).sort(function(a,b){return a.date<b.date?1:-1});
  $('attExtra').innerHTML=ex.length?ex.map(function(x){return '<div class="h"><div><b>'+esc(x.why)+'</b><small>'+esc(x.date)+' · '+(x.hrs||0)+' ساعة'+(x.from?' · '+tm(x.from)+' – '+tm(x.to):'')+'</small></div><b style="color:var(--ok)">'+fm(x.amt)+'</b></div>'}).join(''):'<div class="empty" style="padding:18px">لا يوجد إضافي مالي مسجل</div>';
 }
-window.openAttendance=function(id){AE=id;var e=emp(id);if(!e)return;$('t5').textContent='الحضور والانصراف: '+e.name;$('adate').value=td();$('atime').value=clockNow();$('astart').value=S.workStart||'10:00';$('ahours').value=10;attendanceRender();open_('ov5')};
+window.openAttendance=function(id){AE=id;var e=emp(id);if(!e)return;$('t5').textContent='الحضور والانصراف: '+e.name;$('astart').value=S.workStart||'10:00';$('ahours').value=10;attendanceRender();open_('ov5')};
 $('astart').onchange=function(){if(!this.value)return;S.workStart=this.value;save();attendanceRender()};
-function recordAttendance(type){var e=emp(AE),date=$('adate').value,time=$('atime').value;if(!e||!date||!time){al('اختاري التاريخ والوقت أولاً');return}S.workStart=$('astart').value||'10:00';var old=S.attendance.filter(function(x){return x.eid===AE&&x.date===date&&x.type===type})[0];if(old)old.time=time;else S.attendance.push({id:'a'+Date.now(),eid:AE,date:date,type:type,time:time});lg((type==='in'?'حضور':'انصراف')+': '+e.name+' · '+date+' · '+tm(time));save();attendanceRender();render();toast('تم تسجيل '+(type==='in'?'الحضور':'الانصراف'),e.name+' · '+tm(time))}
+function recordAttendance(type){
+ var e=emp(AE);if(!e)return;var d=new Date(),date=d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2),time=clockNow();
+ S.workStart=$('astart').value||'10:00';var old=S.attendance.filter(function(x){return x.eid===AE&&x.date===date&&x.type===type})[0];
+ if(old){cf('يوجد تسجيل '+(type==='in'?'حضور':'انصراف')+' لهذا اليوم. هل تريدين تحديثه إلى الوقت الحالي؟',function(){old.time=time;lg((type==='in'?'تحديث حضور':'تحديث انصراف')+': '+e.name+' · '+date+' · '+tm(time));save();attendanceRender();render();toast('تم تحديث التسجيل',e.name+' · '+tm(time))});return}
+ S.attendance.push({id:'a'+Date.now(),eid:AE,date:date,type:type,time:time});lg((type==='in'?'حضور':'انصراف')+': '+e.name+' · '+date+' · '+tm(time));save();attendanceRender();render();toast('تم تسجيل '+(type==='in'?'الحضور':'الانصراف'),e.name+' · '+tm(time));
+}
 $('ain').onclick=function(){recordAttendance('in')};$('aout').onclick=function(){recordAttendance('out')};
-function cyc(){var v=$('rm').value.split('-');return v[0]+'-'+(+v[1])}
-function msg(){var e=emp(RE),l=xl(RE,cyc()),t=l.reduce(function(a,x){return a+x.amt},0),v=$('rm').value.split('-'),mn=new Date(+v[0],+v[1]-1,1).toLocaleDateString('ar-EG',{month:'long',year:'numeric'});
-  var s='السلام عليكم '+e.name+' 🌹\nكشف حسابك عن شهر '+mn+':\n\nالمرتب الأساسي: '+fm(e.salary)+'\n';
-  if(l.length){s+='\nالإضافي:\n';l.forEach(function(x,i){var q=x.date.split('-');s+=(i+1)+') '+(+q[2])+'/'+(+q[1])+' - '+x.why+(x.hrs?' ('+x.hrs+' ساعة: '+tm(x.from)+' – '+tm(x.to)+')':'')+': '+fm(x.amt)+'\n'});s+='\nإجمالي الإضافي: '+fm(t)+'\nالإجمالي المستحق: '+fm(+e.salary+t)+'\n'}else s+='\nلا يوجد إضافي هذا الشهر.\n';
-  return s+'\nشكراً لمجهودك 🌹'}
-function repR(){var e=emp(RE),l=xl(RE,cyc()),t=l.reduce(function(a,x){return a+x.amt},0);$('t4').textContent='تقرير: '+e.name;
-  $('rb').innerHTML='<div class="h"><div>المرتب الأساسي</div><b>'+fm(e.salary)+'</b></div>'+(l.length?l.map(function(x){var q=x.date.split('-');return '<div class="h"><div><b>'+esc(x.why)+'</b><small>'+(+q[2])+'/'+(+q[1])+' · '+x.hrs+' ساعة · '+tm(x.from)+' – '+tm(x.to)+'</small></div><div><b style="color:var(--ok)">'+fm(x.amt)+'</b> <button class="btn g s" onclick="dx(\''+x.id+'\')">🗑</button></div></div>'}).join(''):'<div class="empty">لا يوجد إضافي في هذا الشهر</div>')+'<div class="net">الإجمالي المستحق<b>'+fm(+e.salary+t)+'</b><span class="sub">إضافي '+fm(t)+'</span></div>'}
-window.openRep=function(id){RE=id;$('rm').value=ck.replace(/-(\d)$/,'-0$1');repR();open_('ov4')};
-$('rm').onchange=repR;
+function cyc(){var v=$('rm').value.split('-');return v[0]+'-'+v[1]}
+function monthName(){var v=$('rm').value.split('-');return new Date(+v[0],+v[1]-1,1).toLocaleDateString('ar-EG',{month:'long',year:'numeric'})}
+function monthLeaves(id){var c=cyc();return (S.leaves||[]).filter(function(x){return x.eid===id&&x.from.slice(0,7)<=c&&x.to.slice(0,7)>=c}).sort(function(a,b){return a.from<b.from?-1:1})}
+function financialMsg(){var e=emp(RE),l=xl(RE,cyc()),t=l.reduce(function(a,x){return a+x.amt},0),s='السلام عليكم '+e.name+' 🌹\nكشف المرتب والإضافي عن '+monthName()+':\n\nالمرتب الأساسي: '+fm(e.salary)+'\n';
+ if(l.length){s+='\nالإضافي المالي:\n';l.forEach(function(x,i){s+=(i+1)+') '+x.date+' - '+x.why+': '+fm(x.amt)+'\n'});s+='\nإجمالي الإضافي: '+fm(t)+'\n'}else s+='\nلا يوجد إضافي مالي هذا الشهر.\n';
+ s+='\nالإجمالي (أساسي + إضافي): '+fm(+e.salary+t)+'\n';return s+'\nشكراً لمجهودك 🌹'}
+function attendanceMsg(){var e=emp(RE),ds=attendanceDays(RE,cyc()),ls=monthLeaves(RE),late=ds.reduce(function(a,d){return a+(d.late||0)},0),worked=ds.reduce(function(a,d){return a+(d.worked||0)},0),ex=ds.reduce(function(a,d){return a+(d.extra||0)},0);
+ var s='السلام عليكم '+e.name+' 🌹\nتقرير الحضور والانصراف عن '+monthName()+':\n\n';
+ if(ds.length){ds.forEach(function(d){s+=d.date+' | حضور: '+(d.first?tm(d.first):'—')+' | انصراف: '+(d.last?tm(d.last):'—')+' | تأخير: '+(d.late==null?'—':durText(d.late))+' | عمل: '+durText(d.worked)+' | إضافي: '+durText(d.extra)+'\n'});s+='\nإجمالي أيام التسجيل: '+ds.length+'\nإجمالي ساعات العمل: '+durText(worked)+'\nإجمالي التأخير: '+durText(late)+'\nإجمالي ساعات الإضافي: '+durText(ex)+'\n'}else s+='لا يوجد حضور أو انصراف مسجل لهذا الشهر.\n';
+ s+='\nالإجازات:\n';if(ls.length)ls.forEach(function(x){s+=x.type+': '+x.from+' إلى '+x.to+(x.note?' - '+x.note:'')+'\n'});else s+='لا توجد إجازات مسجلة.\n';return s+'\nشكراً لمجهودك 🌹'}
+function msg(mode){if(mode==='pay')return financialMsg();if(mode==='att')return attendanceMsg();return financialMsg()+'\n--------------------\n'+attendanceMsg()}
+function repR(){var e=emp(RE);if(!e)return;var l=xl(RE,cyc()),t=l.reduce(function(a,x){return a+x.amt},0),ds=attendanceDays(RE,cyc()),ls=monthLeaves(RE),late=ds.reduce(function(a,d){return a+(d.late||0)},0),worked=ds.reduce(function(a,d){return a+(d.worked||0)},0),exmin=ds.reduce(function(a,d){return a+(d.extra||0)},0);
+ $('t4').textContent='تقرير الموظف: '+e.name;
+ var attTable=ds.length?'<h3>الحضور والانصراف</h3><div class="attwrap"><table class="attTable"><thead><tr><th>التاريخ</th><th>الحضور</th><th>الانصراف</th><th>التأخير</th><th>ساعات العمل</th><th>إضافي ساعات</th></tr></thead><tbody>'+ds.map(function(d){return '<tr><td>'+esc(d.date)+'</td><td>'+(d.first?tm(d.first):'—')+'</td><td>'+(d.last?tm(d.last):'—')+'</td><td>'+(d.late==null?'—':durText(d.late))+'</td><td>'+durText(d.worked)+'</td><td>'+(d.extra==null?'—':durText(d.extra))+'</td></tr>'}).join('')+'</tbody></table></div>':'<div class="empty">لا توجد سجلات حضور لهذا الشهر</div>';
+ var extraRows=l.length?'<div class="attwrap"><table class="attTable"><thead><tr><th>التاريخ</th><th>سبب الإضافي</th><th>الساعات</th><th>القيمة</th></tr></thead><tbody>'+l.map(function(x){return '<tr><td>'+esc(x.date)+'</td><td>'+esc(x.why)+'</td><td>'+esc(x.hrs||0)+'</td><td>'+fm(x.amt)+'</td></tr>'}).join('')+'</tbody></table></div>':'<div class="empty">لا يوجد إضافي مالي هذا الشهر</div>';
+ var leaveRows=ls.length?'<div class="attwrap"><table class="attTable"><thead><tr><th>النوع</th><th>من</th><th>إلى</th><th>ملاحظات</th></tr></thead><tbody>'+ls.map(function(x){return '<tr><td>'+esc(x.type)+'</td><td>'+esc(x.from)+'</td><td>'+esc(x.to)+'</td><td>'+esc(x.note||'—')+'</td></tr>'}).join('')+'</tbody></table></div>':'<div class="sub">لا توجد إجازات مسجلة خلال الشهر</div>';
+ $('rb').innerHTML='<div class="stats"><div class="st"><b>'+ds.length+'</b><span>أيام مسجلة</span></div><div class="st"><b>'+durText(worked)+'</b><span>إجمالي العمل</span></div><div class="st"><b>'+durText(late)+'</b><span>إجمالي التأخير</span></div></div><div class="stats"><div class="st"><b>'+durText(exmin)+'</b><span>ساعات إضافية</span></div><div class="st"><b>'+fm(t)+'</b><span>قيمة الإضافي</span></div><div class="st"><b>'+fm(+e.salary+t)+'</b><span>أساسي + إضافي</span></div></div><h3>تفاصيل الحضور</h3>'+attTable+'<h3>الإضافي المالي</h3>'+extraRows+'<h3>الإجازات</h3>'+leaveRows+'<div class="h"><div>المرتب الأساسي</div><b>'+fm(e.salary)+'</b></div><div class="net">الإجمالي المستحق (أساسي + إضافي)<b>'+fm(+e.salary+t)+'</b></div>';
+}
+window.openRep=function(id){RE=id;$('rm').value=ck.replace(/-(\d)$/,'-0$1');repR();open_('ov4')};$('rm').onchange=repR;
+function sendWhats(mode){var e=emp(RE);if(!e.ph){al('سجّلي رقم واتساب الموظف من زر تعديل أولاً');return}var text=msg(mode);window.open('https://wa.me/'+e.ph+'?text='+encodeURIComponent(text),'_blank');lg('إرسال تقرير واتساب ('+mode+'): '+e.name+' · '+$('rm').value);save()}
+$('rsPay').onclick=function(){sendWhats('pay')};$('rsAtt').onclick=function(){sendWhats('att')};$('rsAll').onclick=function(){sendWhats('all')};
+$('rc').onclick=function(){var t=msg('all');try{navigator.clipboard.writeText(t).then(function(){toast('تم النسخ','تم نسخ التقرير الكامل')}).catch(function(){al(t)})}catch(x){al(t)}};
 window.dx=function(id){var x=S.x.filter(function(z){return z.id===id})[0];if(!x)return;cf('حذف هذا الإضافي؟',function(){S.x=S.x.filter(function(z){return z.id!==id});lg('حذف إضافي: '+emp(RE).name+' · '+x.why+' · '+fm(x.amt));save();repR();render()})};
-$('rs').onclick=function(){var e=emp(RE);if(!e.ph){al('سجّل رقم واتساب الموظف من زرار تعديل أولاً');return}
-  window.open('https://wa.me/'+e.ph+'?text='+encodeURIComponent(msg()),'_blank');lg('إرسال كشف واتساب: '+e.name+' · '+$('rm').value);save()};
-$('rc').onclick=function(){var t=msg();try{navigator.clipboard.writeText(t);toast('تم النسخ','الصق الرسالة في أي مكان')}catch(x){al(t)}};
+var LE=null;
+window.openLeave=function(id){LE=id;var e=emp(id);if(!e)return;$('t6').textContent='إجازة الموظف: '+e.name;$('lvType').value='سنوية';$('lvFrom').value=td();$('lvTo').value=td();$('lvNote').value='';leaveRender();open_('ov6')};
+function leaveRender(){var rows=(S.leaves||[]).filter(function(x){return x.eid===LE}).sort(function(a,b){return a.from<b.from?1:-1});$('lvRows').innerHTML=rows.length?rows.map(function(x){return '<div class="h"><div><b>'+esc(x.type)+'</b><small>'+esc(x.from)+' إلى '+esc(x.to)+(x.note?' · '+esc(x.note):'')+'</small></div><button class="btn g s" onclick="deleteLeave(\''+x.id+'\')">حذف</button></div>'}).join(''):'<div class="empty">لا توجد إجازات مسجلة</div>'}
+$('lvSave').onclick=function(){var f=$('lvFrom').value,t=$('lvTo').value;if(!f||!t||t<f){al('راجعي تاريخ بداية ونهاية الإجازة');return}var e=emp(LE);S.leaves=S.leaves||[];S.leaves.push({id:'lv'+Date.now(),eid:LE,type:$('lvType').value,from:f,to:t,note:$('lvNote').value.trim()});lg('إجازة '+e.name+' · '+$('lvType').value+' · '+f+' إلى '+t);save();leaveRender();repRIfOpen();toast('تم تسجيل الإجازة','تم حفظ إجازة '+e.name)};
+window.deleteLeave=function(id){cf('حذف الإجازة المسجلة؟',function(){S.leaves=S.leaves.filter(function(x){return x.id!==id});save();leaveRender();repRIfOpen()})};
+function repRIfOpen(){if($('ov4').classList.contains('on')&&RE)repR()}
 $('tn').value=S.tone||'bell';
 $('tn').onchange=function(){S.tone=this.value;save();beep();toast('تم اختيار النغمة','دي النغمة اللي هتسمعها مع التنبيه')};
 $('d').onclick=function(){try{this.showPicker()}catch(x){}};
@@ -322,7 +351,7 @@ function loadUserData(u){
   var raw=null;try{raw=localStorage.getItem('pr_data_v2_'+u)}catch(x){}
   if(raw){try{S=JSON.parse(raw)||{e:[],p:[]}}catch(x){S={e:[],p:[]}}}
   else S={e:[],p:[]};
-  S.e=S.e||[];S.p=S.p||[];S.l=S.l||[];S.x=S.x||[];S.attendance=S.attendance||[];S.workStart=S.workStart||'10:00';
+  S.e=S.e||[];S.p=S.p||[];S.l=S.l||[];S.x=S.x||[];S.attendance=S.attendance||[];S.leaves=S.leaves||[];S.workStart=S.workStart||'10:00';
   ACTIVE_USER=u;
   try{localStorage.setItem(K,JSON.stringify(S));sessionStorage.setItem('pr_active_user',u)}catch(x){}
 }

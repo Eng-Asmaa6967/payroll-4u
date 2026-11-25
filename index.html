@@ -49,6 +49,7 @@ h1{margin:0;font-size:21px;font-weight:800;background:linear-gradient(90deg,#f3d
 .ov{position:fixed;inset:0;background:rgba(0,0,0,.62);backdrop-filter:blur(3px);display:none;align-items:flex-end;justify-content:center;z-index:12}.ov.on{display:flex}
 .sheet{background:var(--card);width:100%;max-width:640px;border-radius:26px 26px 0 0;padding:26px 18px calc(20px + env(safe-area-inset-bottom,0px));border-top:2px solid var(--gold);max-height:92vh;overflow:auto;position:relative;animation:sl .3s ease}
 .sheet::before{content:"";position:absolute;top:9px;left:50%;width:44px;height:4px;margin-left:-22px;border-radius:4px;background:var(--ln)}
+.backbtn{float:right;margin:0 0 8px 10px;border:1px solid var(--ln);background:var(--card2);color:var(--gold);border-radius:12px;padding:5px 12px;font:700 13px Cairo;cursor:pointer}.qrbox{text-align:center;padding:18px;border:1px dashed var(--gold);border-radius:18px;margin:12px 0;background:var(--card2)}#qrCanvas{display:inline-block;background:#fff;padding:10px;border-radius:12px;min-width:220px;min-height:220px}.qrbox canvas,.qrbox img{max-width:220px!important;height:auto!important}
 @keyframes sl{from{transform:translateY(60px);opacity:0}}
 .sheet h2{margin:0 0 12px;font-size:18px;color:var(--gold)}
 label{display:block;font-size:12px;font-weight:600;color:var(--mu);margin:12px 0 5px}
@@ -107,7 +108,7 @@ h3{margin:16px 4px 6px;font-size:15px;color:var(--gold)}
 <div id="list"></div>
 <button class="fab" id="add"><span>＋</span>موظف جديد</button>
 
-<div class="ov" id="ov1"><div class="sheet">
+<div class="ov" id="ov1"><div class="sheet"><button type="button" class="backbtn" onclick="backModal('ov1')">← رجوع</button>
 <h2 id="t1">إضافة موظف</h2>
 <label>الاسم</label><input id="n">
 <label>الوظيفة</label><input id="j">
@@ -119,7 +120,7 @@ h3{margin:16px 4px 6px;font-size:15px;color:var(--gold)}
 <div class="row"><button class="btn" id="sv" style="flex:1">حفظ</button><button class="btn g" data-x="ov1">إلغاء</button><button class="btn g" id="del" style="display:none;color:var(--bad)">حذف</button></div>
 </div></div>
 
-<div class="ov" id="ov2"><div class="sheet">
+<div class="ov" id="ov2"><div class="sheet"><button type="button" class="backbtn" onclick="backModal('ov2')">← رجوع</button>
 <h2 id="t2">سداد مرتب</h2>
 <div class="g2"><div><label>المرتب الأساسي</label><input id="pb" type="number" readonly></div>
 <div><label>مكافأة / زيادة</label><input id="pa" type="number" value="0" inputmode="numeric"></div></div>
@@ -130,7 +131,7 @@ h3{margin:16px 4px 6px;font-size:15px;color:var(--gold)}
 <div class="row"><button class="btn" id="pay" style="flex:1">✓ تأكيد السداد</button><button class="btn g" data-x="ov2">إلغاء</button></div>
 </div></div>
 
-<div class="ov" id="ov3"><div class="sheet"><h2 id="t3"></h2>
+<div class="ov" id="ov3"><div class="sheet"><button type="button" class="backbtn" onclick="backModal('ov3')">← رجوع</button><h2 id="t3"></h2>
 <label>التاريخ</label><input id="xd" type="date">
 <div class="g2"><div><label>من الساعة</label><input id="xf" type="time"></div><div><label>إلى الساعة</label><input id="xt" type="time"></div></div>
 <div class="sub" id="xhr" style="margin-top:6px"></div>
@@ -139,14 +140,14 @@ h3{margin:16px 4px 6px;font-size:15px;color:var(--gold)}
 <div class="row"><button class="btn g s" onclick="$('xa').value=100">100</button><button class="btn g s" onclick="$('xa').value=200">200</button><button class="btn g s" onclick="$('xa').value=300">300</button><button class="btn g s" onclick="$('xa').value=500">500</button></div>
 <div class="row"><button class="btn" id="xs" style="flex:1">حفظ الإضافي</button><button class="btn g" data-x="ov3">إلغاء</button></div>
 </div></div>
-<div class="ov" id="ov4"><div class="sheet"><h2 id="t4">تقرير الموظف</h2>
+<div class="ov" id="ov4"><div class="sheet"><button type="button" class="backbtn" onclick="backModal('ov4')">← رجوع</button><h2 id="t4">تقرير الموظف</h2>
 <label>الشهر</label><input id="rm" type="month"><div id="rb"></div>
 <label>رمز التقدير (بيتبعت لوحده في آخر الرسالة، اضغطي تاني لإلغائه)</label><div class="icgrid" id="rIcons"></div>
 <div class="row" style="flex-wrap:wrap"><button class="btn" id="rsPay" style="flex:1">📲 مرتب + إضافي</button><button class="btn g" id="rsAtt" style="flex:1">🕘 الحضور والإجازات</button></div>
 <div class="row"><button class="btn" id="rPdfS" style="flex:1">📎 مشاركة PDF</button><button class="btn g" id="rPdfD" style="flex:1">⬇ تنزيل PDF</button></div>
-<div class="row"><button class="btn g" id="rsAll" style="flex:1">📨 إرسال التقرير كامل</button><button class="btn g s" id="rc">نسخ</button><button class="btn g s" onclick="shareTxt()">📤 مشاركة</button><button class="btn g" data-x="ov4">إغلاق</button></div>
+<div class="row"><button class="btn g" data-x="ov4" style="flex:1">رجوع</button></div>
 </div></div>
-<div class="ov" id="ov5"><div class="sheet"><h2 id="t5">الحضور والانصراف</h2>
+<div class="ov" id="ov5"><div class="sheet"><button type="button" class="backbtn" onclick="backModal('ov5')">← رجوع</button><h2 id="t5">الحضور والانصراف</h2>
 <div class="g2"><div><label>بداية الدوام</label><input id="astart" type="time" value="10:00"></div><div><label>ساعات العمل المطلوبة</label><input id="ahours" type="number" min="1" max="24" value="10"></div></div>
 <div class="g2"><div><label>سياسة الخصم التلقائي</label><select id="dedp"><option value="late">خصم ساعات التأخير</option><option value="diff">خصم النقص في ساعات العمل</option><option value="none">بدون خصم تلقائي</option></select></div><div><label>أيام الشهر للحساب</label><input id="mdays" type="number" min="20" max="31" value="30"></div></div>
 <div class="sub" id="arate" style="margin-top:6px"></div>
@@ -158,13 +159,14 @@ h3{margin:16px 4px 6px;font-size:15px;color:var(--gold)}
 <h3>⏱ الإضافي المالي المسجل</h3><div id="attExtra"></div>
 <div class="row"><button class="btn g" data-x="ov5" style="flex:1">إغلاق</button></div>
 </div></div>
-<div class="ov" id="ov6"><div class="sheet"><h2 id="t6">تسجيل إجازة</h2>
+<div class="ov" id="ov6"><div class="sheet"><button type="button" class="backbtn" onclick="backModal('ov6')">← رجوع</button><h2 id="t6">تسجيل إجازة</h2>
 <label>نوع الإجازة</label><select id="lvType"><option value="سنوية">سنوية</option><option value="عارضة">عارضة</option><option value="مرضية">مرضية</option><option value="بدون أجر">بدون أجر</option><option value="أخرى">أخرى</option></select>
 <div class="g2"><div><label>من تاريخ</label><input id="lvFrom" type="date"></div><div><label>إلى تاريخ</label><input id="lvTo" type="date"></div></div>
 <label>ملاحظات / سبب الإجازة</label><input id="lvNote" placeholder="اختياري">
 <div class="row"><button class="btn" id="lvSave" style="flex:1">حفظ الإجازة</button><button class="btn g" data-x="ov6">إلغاء</button></div>
 <h3>الإجازات المسجلة</h3><div id="lvRows"></div>
 </div></div>
+<div class="ov" id="ov7"><div class="sheet"><button type="button" class="backbtn" onclick="backModal('ov7')">← رجوع</button><h2 id="t7">باركود الموظف</h2><div class="qrbox"><div id="qrCanvas"></div><b id="qrName"></b><div class="sub" id="qrInfo"></div><div class="tag ok" style="margin-top:10px">كاش موظف · جاهز للدفع</div></div><div class="row"><button class="btn g" id="qrPrint" style="flex:1">🖨 طباعة الباركود</button><button class="btn g" data-x="ov7">رجوع</button></div></div></div>
 <div class="ov" id="ovc" style="z-index:70"><div class="sheet" style="text-align:center"><div id="cm" style="font-size:16px;font-weight:700;line-height:1.9;margin:8px 0 14px;white-space:pre-wrap"></div><div class="row" id="cb"></div></div></div>
 <div class="toast" id="toast"></div>
 <script>
@@ -181,16 +183,15 @@ function fm(n){return Number(n||0).toLocaleString('ar-EG')+' ج.م'}
 var now=new Date(),Y=now.getFullYear(),M=now.getMonth(),T=now.getDate();
 var ck=Y+'-'+(M+1);
 function dim(y,m){return new Date(y,m+1,0).getDate()}
+function empCycle(e){var today=td(),due=(e.start&&e.start>=today)?e.start:(Y+'-'+('0'+(M+1)).slice(-2)+'-'+('0'+Math.min(e.day,dim(Y,M))).slice(-2));return due.slice(0,7)}
 function st(e){
-  if(e.start&&!S.p.some(function(p){return p.eid===e.id&&p.cycle===ck})){var sp=e.start.split('-'),sy=+sp[0],sm=+sp[1]-1,sd=+sp[2];if(sy*12+sm>Y*12+M){var n0=Math.round((new Date(sy,sm,sd)-new Date(Y,M,T))/864e5);return{k:'warn',t:'أول قبض '+sd+'/'+(sm+1)+'/'+sy+' · باقي '+n0+' يوم',up:1,left:n0,soon:1,due:n0<=(+e.r||0)?1:0}}}
-  var paid=S.p.some(function(p){return p.eid===e.id&&p.cycle===ck});
-  var d=Math.min(e.day,dim(Y,M));
-  if(paid){var ny=M==11?Y+1:Y,nm=(M+1)%12,nd=Math.min(e.day,dim(ny,nm));
-    var diff=Math.round((new Date(ny,nm,nd)-new Date(Y,M,T))/864e5);
-    var pp=S.p.filter(function(p){return p.eid===e.id&&p.cycle===ck})[0];return{k:'ok',t:'تم صرف '+fm(pp?pp.net:0)+' ✓ · القادم بعد '+diff+' يوم'}}
-  if(T<d)return{k:'warn',t:'يوم '+d+' · باقي '+(d-T)+' يوم',up:1,left:d-T,soon:1,due:(d-T)<=(+e.r||0)?1:0};
-  if(T==d)return{k:'warn',t:'اليوم ميعاد القبض',due:1};
-  return{k:'bad',t:'متأخر '+(T-d)+' يوم',due:1,late:1};
+  var today=td(),due=(e.start&&e.start>=today)?e.start:(Y+'-'+('0'+(M+1)).slice(-2)+'-'+('0'+Math.min(e.day,dim(Y,M))).slice(-2)),cy=due.slice(0,7);
+  var paid=S.p.filter(function(p){return p.eid===e.id&&p.cycle===cy})[0];
+  if(paid){var z=due.split('-'),ny=+z[0],nm=+z[1],nd=Math.min(e.day,dim(ny,nm));var next=new Date(ny,nm,nd);return{k:'ok',t:'تم صرف '+fm(paid.net)+' ✓ · القادم '+next.toLocaleDateString('ar-EG')}}
+  var delta=Math.round((new Date(due+'T00:00:00')-new Date(today+'T00:00:00'))/864e5);
+  if(delta>0)return{k:'warn',t:'ميعاد القبض '+due+' · باقي '+delta+' يوم',up:1,left:delta,soon:1,due:delta<=(+e.r||0)?1:0};
+  if(delta===0)return{k:'warn',t:'اليوم ميعاد القبض',due:1};
+  return{k:'bad',t:'متأخر '+Math.abs(delta)+' يوم',due:1,late:1};
 }
 function render(){
   $('sq').style.display=tab=='e'?'':'none';
@@ -202,15 +203,20 @@ function render(){
   $('alerts').innerHTML=due.map(function(x){return '<div class="alert'+(x[1].late?' bad':'')+'"><div>🔔 <b>'+esc(x[0].name)+'</b><div class="sub">'+(x[1].late?'مرتبه متأخر · ':x[1].soon?'باقي '+x[1].left+' يوم على القبض · ':'اليوم ميعاد قبضه · ')+fm(x[0].salary)+'</div></div><button class="btn s" onclick="openPay(\''+x[0].id+'\')">سداد</button></div>'}).join('');
   if(tab=='e'){
     var fl=S.e.filter(function(e){return !SQ||e.name.indexOf(SQ)>-1||(e.job||'').indexOf(SQ)>-1});
-    $('list').innerHTML=fl.length?fl.map(function(e){var s=st(e),tr=todayRec(e.id),at=tr.i?'<span class="tag ok">🟢 حضر '+tm(tr.i)+(tr.o?' · 🔴 انصرف '+tm(tr.o):'')+'</span>':'<span class="tag">لم يسجل حضور اليوم</span>';return '<div class="emp"><div class="top"><div class="av">'+esc(e.name.charAt(0))+'</div><div><div class="nm tap" role="button" onclick="openAttendance(\''+e.id+'\')">'+esc(e.name)+'</div><div class="jb">'+esc(e.job||'—')+'</div></div><div class="sal">'+fm(e.salary)+'</div></div><div class="tags"><span class="tag '+s.k+'">'+s.t+'</span>'+at+'</div><div class="qa"><button class="btn bin s" onclick="quickAtt(\''+e.id+'\',\'in\')">🟢 حضور</button><button class="btn bout s" onclick="quickAtt(\''+e.id+'\',\'out\')">🔴 انصراف</button>'+(s.k!='ok'?'<button class="btn s" onclick="openPay(\''+e.id+'\')">💵 سداد</button>':'')+'<button class="btn g s" onclick="openRep(\''+e.id+'\')">📄 تقرير</button><button class="btn g s" onclick="tgMore(\''+e.id+'\')">'+(MORE[e.id]?'▲ أقل':'⋯ المزيد')+'</button></div>'+(MORE[e.id]?'<div class="qa"><button class="btn g s" onclick="openAttendance(\''+e.id+'\')">🕘 السجل</button><button class="btn g s" onclick="openX(\''+e.id+'\')">⏱ إضافي</button><button class="btn g s" onclick="openLeave(\''+e.id+'\')">🌴 إجازة</button><button class="btn g s" onclick="openEdit(\''+e.id+'\')">✏️ تعديل</button></div>':'')+'</div>'}).join(''):(S.e.length?'<div class="empty">لا توجد نتائج للبحث</div>':'<div class="empty">لا يوجد موظفين بعد<br>اضغط + لإضافة أول موظف</div>');
+    $('list').innerHTML=fl.length?fl.map(function(e){var s=st(e),tr=todayRec(e.id),at=tr.i?'<span class="tag ok">🟢 حضر '+tm(tr.i)+(tr.o?' · 🔴 انصرف '+tm(tr.o):'')+'</span>':'<span class="tag">لم يسجل حضور اليوم</span>';return '<div class="emp"><div class="top"><div class="av">'+esc(e.name.charAt(0))+'</div><div><div class="nm tap" role="button" onclick="openAttendance(\''+e.id+'\')">'+esc(e.name)+'</div><div class="jb">'+esc(e.job||'—')+'</div></div><div class="sal">'+fm(e.salary)+'</div></div><div class="tags"><span class="tag '+s.k+'">'+s.t+'</span>'+at+'</div><div class="qa"><button class="btn bin s" onclick="quickAtt(\''+e.id+'\',\'in\')">🟢 حضور</button><button class="btn bout s" onclick="quickAtt(\''+e.id+'\',\'out\')">🔴 انصراف</button>'+(s.k!='ok'?'<button class="btn s" onclick="openPay(\''+e.id+'\')">💵 سداد</button>':'')+'<button class="btn g s" onclick="openRep(\''+e.id+'\')">📄 تقرير</button><button class="btn g s" onclick="openQR(\''+e.id+'\')">▦ باركود كاش</button><button class="btn g s" onclick="tgMore(\''+e.id+'\')">'+(MORE[e.id]?'▲ أقل':'⋯ المزيد')+'</button></div>'+(MORE[e.id]?'<div class="qa"><button class="btn g s" onclick="openAttendance(\''+e.id+'\')">🕘 السجل</button><button class="btn g s" onclick="openX(\''+e.id+'\')">⏱ إضافي</button><button class="btn g s" onclick="openLeave(\''+e.id+'\')">🌴 إجازة</button><button class="btn g s" onclick="openEdit(\''+e.id+'\')">✏️ تعديل</button></div>':'')+'</div>'}).join(''):(S.e.length?'<div class="empty">لا توجد نتائج للبحث</div>':'<div class="empty">لا يوجد موظفين بعد<br>اضغط + لإضافة أول موظف</div>');
   }else if(tab=='l'){
     $('list').innerHTML='<div class="emp"><div class="nm">💾 النسخ الاحتياطي</div><div class="sub" style="margin:5px 0 14px">بياناتك بتتحفظ تلقائياً على الجهاز بعد كل حركة. زرار النسخة بينزّل ملف باسم المستخدم والتاريخ على طول.</div><div class="g2"><button class="btn s" onclick="dlb()">⬇ نسخة احتياطية</button><button class="btn g s" onclick="fl.click()">⬆ استرجاع من ملف</button></div><input type="file" id="fl" accept=".json,application/json" style="display:none" onchange="rf(this)"><div style="height:1px;background:var(--ln);margin:16px 0"></div><div class="nm">👤 المستخدمون</div><div class="sub" style="margin:5px 0 12px">كل مستخدم له بياناته المنفصلة. الخروج مش بيحذف الحساب.</div><div class="g2"><button class="btn g s" onclick="chu()">＋ مستخدم جديد</button><button class="btn g s" onclick="logoutUser()">🔒 تسجيل الخروج</button></div><div style="height:1px;background:var(--ln);margin:16px 0"></div><div class="nm" style="color:var(--bad)">🗑 مسح كل البيانات</div><div class="sub" style="margin:5px 0 10px">بيمسح كل المستخدمين والبيانات نهائياً ويبدأ من الصفر.</div><button class="btn g s" style="width:100%;color:var(--bad);border-color:var(--bad)" onclick="wipeAll()">مسح كل البيانات والبدء من جديد</button><div class="sub" style="margin-top:12px;color:var(--warn)">البيانات محفوظة في نفس المتصفح والجهاز. لو فتحتي من جهاز آخر، نزّلي نسخة احتياطية واسترجعيها هناك.</div></div><div class="nm" style="margin:16px 4px 4px">🕘 سجل الحركات</div>'+(S.l.length?S.l.slice().reverse().map(function(g){return '<div class="h"><div><b>'+esc(g.a)+'</b><small>'+g.t+'</small></div></div>'}).join(''):'<div class="empty">لا توجد حركات مسجلة</div>');
   }else{
     $('list').innerHTML=S.p.length?S.p.slice().reverse().map(function(p){return '<div class="h"><div><b>'+esc(p.name)+'</b><small>'+p.date+' · '+esc(p.method)+(p.note?' · '+esc(p.note):'')+'</small><small>أساسي '+fm(p.base)+' · مكافأة '+fm(p.bonus)+' · خصم '+fm(p.ded)+'</small></div><b style="color:var(--ok)">'+fm(p.net)+'</b></div>'}).join(''):'<div class="empty">لا توجد دفعات مسجلة</div>';
   }
 }
-function open_(i){$(i).classList.add('on')}
-document.querySelectorAll('[data-x]').forEach(function(b){b.onclick=function(){$(b.dataset.x).classList.remove('on')}});
+var modalTrail=[];
+function open_(i){$(i).classList.add('on');if(i!=='ovc'){modalTrail.push(i);try{history.pushState({payrollModal:i},'','#'+i)}catch(x){}}}
+window.backModal=function(i){$(i).classList.remove('on');modalTrail=modalTrail.filter(function(x){return x!==i});if(history.state&&history.state.payrollModal===i)history.back();};
+window.addEventListener('popstate',function(){var active=['ov1','ov2','ov3','ov4','ov5','ov6','ov7'].filter(function(i){return $(i).classList.contains('on')});if(active.length){$(active[active.length-1]).classList.remove('on');modalTrail.pop()}});
+window.openQR=function(id){var e=emp(id);if(!e)return;$('t7').textContent='باركود كاش الموظف';$('qrName').textContent=e.name;$('qrInfo').textContent='المرتب الأساسي: '+fm(e.salary)+' · رقم الموظف: '+e.id;$('qrCanvas').innerHTML='';var payload='الشركة المصرية 4U | كاش موظف | '+e.name+' | '+e.id+' | المبلغ الأساسي '+e.salary+' جنيه | حالة الدفع: جاهز للدفع';loadLib('https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js',function(){return window.QRCode}).then(function(){new QRCode($('qrCanvas'),{text:payload,width:220,height:220,colorDark:'#111111',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.H})}).catch(function(){$('qrCanvas').textContent=payload});open_('ov7')};
+$('qrPrint').onclick=function(){var w=window.open('','_blank');if(!w)return;w.document.write('<html dir="rtl"><meta charset="utf-8"><title>باركود الموظف</title><body style="font-family:Arial;text-align:center;padding:30px"><h2>'+esc($('qrName').textContent)+'</h2>'+ $('qrCanvas').innerHTML+'<p>'+esc($('qrInfo').textContent)+'</p><h3>كاش موظف · جاهز للدفع</h3></body></html>');w.document.close();w.print()};
+document.querySelectorAll('[data-x]').forEach(function(b){b.onclick=function(){backModal(b.dataset.x)}});
 document.querySelectorAll('.tabs button').forEach(function(b){b.onclick=function(){tab=b.dataset.t;document.querySelectorAll('.tabs button').forEach(function(x){x.classList.toggle('on',x===b)});render()}});
 $('add').onclick=function(){edit=null;$('t1').textContent='إضافة موظف';['n','j','s','d'].forEach(function(i){$(i).value=''});$('r').value=1;$('ph').value='';$('del').style.display='none';open_('ov1')};
 window.openEdit=function(id){var e=S.e.filter(function(x){return x.id===id})[0];edit=id;$('t1').textContent='تعديل بيانات الموظف';$('n').value=e.name;$('j').value=e.job;$('s').value=e.salary;$('d').value=e.start||(Y+'-'+('0'+(M+1)).slice(-2)+'-'+('0'+Math.min(e.day,dim(Y,M))).slice(-2));$('r').value=e.r||0;$('ph').value=e.ph||'';$('del').style.display='';open_('ov1')};
@@ -222,7 +228,7 @@ $('sv').onclick=function(){
   else{S.e.push({id:'e'+Date.now(),name:n,job:$('j').value.trim(),salary:s,day:d,start:ds,ph:np($('ph').value),r:+$('r').value||0});lg('إضافة موظف: '+n+' · '+fm(s)+' · يوم '+d)}
   save();$('ov1').classList.remove('on');render();check();
 };
-window.openPay=function(id){var e=S.e.filter(function(x){return x.id===id})[0];payId=id;$('t2').textContent='سداد مرتب: '+e.name;$('pb').value=e.salary;$('pa').value=xsum(id,ck);var di=dedInfo(id,ckp()),nt=xl(id,ck).map(function(x){return x.why});if(di.amt)nt.push('خصم: '+di.txt);$('pd').value=di.amt;$('pn').value=nt.join('، ');calc();open_('ov2')};
+window.openPay=function(id){var e=S.e.filter(function(x){return x.id===id})[0];payId=id;$('t2').textContent='سداد مرتب: '+e.name;$('pb').value=e.salary;$('pa').value=xsum(id,ck);var pc=empCycle(e),di=dedInfo(id,pc),nt=xl(id,pc).map(function(x){return x.why});if(di.amt)nt.push('خصم: '+di.txt);$('pd').value=di.amt;$('pn').value=nt.join('، ');calc();open_('ov2')};
 function net(){return (+$('pb').value)+(+$('pa').value||0)-(+$('pd').value||0)}
 function calc(){$('pnet').textContent=fm(net())}
 ['pa','pd'].forEach(function(i){$(i).oninput=calc});
@@ -231,8 +237,9 @@ $('pay').onclick=function(){
   var n=net();if(n<0){al('الخصم أكبر من المرتب');return}
   var base=+$('pb').value,bo=+$('pa').value||0,de=+$('pd').value||0,pm=$('pm').value,pn=$('pn').value.trim();
   cf('تأكيد دفع '+fm(n)+' إلى '+e.name+'؟',function(){
-    S.p.push({id:'p'+Date.now(),eid:e.id,name:e.name,cycle:ck,base:base,bonus:bo,ded:de,net:n,method:pm,note:pn,date:new Date().toLocaleDateString('ar-EG')});
-    lg('سداد مرتب '+e.name+' · صافي '+fm(n)+' ('+pm+')');save();$('ov2').classList.remove('on');render();beep();
+    S.p.push({id:'p'+Date.now(),eid:e.id,name:e.name,cycle:empCycle(e),base:base,bonus:bo,ded:de,net:n,method:pm,note:pn,date:new Date().toLocaleDateString('ar-EG')});
+    var paidCycle=empCycle(e),parts=paidCycle.split('-'),yy=+parts[0],mm=+parts[1]-1,nd=new Date(yy,mm+1,Math.min(e.day,dim(yy,mm+1)));e.start=nd.getFullYear()+'-'+('0'+(nd.getMonth()+1)).slice(-2)+'-'+('0'+nd.getDate()).slice(-2);
+     lg('سداد مرتب '+e.name+' · صافي '+fm(n)+' ('+pm+') · ميعاد القبض القادم '+e.start);save();$('ov2').classList.remove('on');render();beep();
     toast('✅ تم السداد','دفعت '+fm(n)+' إلى '+e.name+' ('+pm+')')});
 };
 var TONES={bell:[[880,0],[1175,.18],[1568,.36]],soft:[[523,0],[659,.22],[784,.44]],alarm:[[988,0],[740,.25],[988,.5],[740,.75]]};
@@ -282,6 +289,8 @@ function np(v){var d=String(v).replace(/\D/g,'');if(d.indexOf('00')==0)d=d.slice
 function tm(t){try{return new Date('1970-01-01T'+t).toLocaleTimeString('ar-EG',{hour:'numeric',minute:'2-digit'})}catch(x){return t}}
 function xl(id,cy){return S.x.filter(function(x){return x.eid===id&&x.cycle===cy}).sort(function(a,b){return a.date<b.date?-1:1})}
 function xsum(id,cy){return xl(id,cy).reduce(function(a,x){return a+x.amt},0)}
+function manualDedSum(id,cy){return S.p.filter(function(p){return p.eid===id&&p.cycle===cy}).reduce(function(a,p){return a+(+p.ded||0)},0)}
+function totalDeduct(id,cy,auto){var rows=S.p.filter(function(p){return p.eid===id&&p.cycle===cy});return rows.length?manualDedSum(id,cy):auto}
 var XE=null,RE=null;
 function xh(){var f=$('xf').value,t=$('xt').value;if(!f||!t){$('xhr').textContent='';return 0}var a=f.split(':'),b=t.split(':'),m=(+b[0]*60+ +b[1])-(+a[0]*60+ +a[1]);if(m<=0)m+=1440;var h=Math.round(m/6)/10;$('xhr').textContent='المدة: '+h+' ساعة';return h}
 $('xf').onchange=xh;$('xt').onchange=xh;$('xd').onclick=function(){try{this.showPicker()}catch(x){}};
@@ -341,29 +350,29 @@ function monthName(){var v=$('rm').value.split('-');return new Date(+v[0],+v[1]-
 function monthLeaves(id){var c=cyc();return (S.leaves||[]).filter(function(x){return x.eid===id&&x.from.slice(0,7)<=c&&x.to.slice(0,7)>=c}).sort(function(a,b){return a.from<b.from?-1:1})}
 var ICONS=['🦁','🐋','🌹','⭐','👑'];
 function ratIcon(){return (S.rating||{})[RE+'|'+cyc()]||''}
-function financialMsg(){var e=emp(RE),c=cyc(),l=xl(RE,c),t=l.reduce(function(a,x){return a+x.amt},0),di=dedInfo(RE,c),s='السلام عليكم '+e.name+' 🌹\nكشف المرتب والإضافي عن '+monthName()+':\n\nالمرتب الأساسي: '+fm(e.salary)+'\n';
+function financialMsg(){var e=emp(RE),c=cyc(),l=xl(RE,c),pmt=S.p.filter(function(p){return p.eid===RE&&p.cycle===c}),manualDed=pmt.reduce(function(a,p){return a+(+p.ded||0)},0),t=l.reduce(function(a,x){return a+x.amt},0),di=dedInfo(RE,c),s='السلام عليكم '+e.name+' 🌹\nكشف المرتب والإضافي عن '+monthName()+':\n\nالمرتب الأساسي: '+fm(e.salary)+'\n';
  if(l.length){s+='\nالإضافي المالي:\n';l.forEach(function(x,i){s+=(i+1)+') '+x.date+' - '+x.why+': '+fm(x.amt)+'\n'});s+='\nإجمالي الإضافي: '+fm(t)+'\n'}else s+='\nلا يوجد إضافي مالي هذا الشهر.\n';
- if(di.amt)s+='\nالخصم ('+di.txt+'): -'+fm(di.amt)+'\n';
- s+='\nالإجمالي المستحق: '+fm(+e.salary+t-di.amt)+'\n';return s+'\nشكراً لمجهودك 🌹'}
+ var dedTotal=totalDeduct(RE,c,di.amt);
+ if(dedTotal)s+='\nالخصومات / السلف (تشمل الخصم التلقائي إن وجد): -'+fm(dedTotal)+'\n';
+ s+='\nالإجمالي المستحق: '+fm(+e.salary+t-dedTotal)+'\n';return s+'\nشكراً لمجهودك 🌹'}
 function attendanceMsg(){var e=emp(RE),ds=attendanceDays(RE,cyc()),ls=monthLeaves(RE),T=dsTot(ds);
  var s='السلام عليكم '+e.name+' 🌹\nتقرير الحضور والانصراف عن '+monthName()+':\n\n';
  if(ds.length){ds.forEach(function(d){s+=d.date+' | حضور: '+(d.first?tm(d.first):'—')+' | انصراف: '+(d.last?tm(d.last):'—')+' | تأخير: '+(d.late==null?'—':durText(d.late))+' | عمل: '+durText(d.worked)+' | الفرق: '+sdur(d.diff)+'\n'});s+='\nإجمالي أيام التسجيل: '+ds.length+'\nإجمالي ساعات العمل: '+durText(T.worked)+'\nإجمالي التأخير: '+durText(T.late)+'\nصافي الفرق (موجب/سالب): '+sdur(T.diff)+'\n'}else s+='لا يوجد حضور أو انصراف مسجل لهذا الشهر.\n';
  s+='\nالإجازات:\n';if(ls.length)ls.forEach(function(x){s+=x.type+': '+x.from+' إلى '+x.to+(x.note?' - '+x.note:'')+'\n'});else s+='لا توجد إجازات مسجلة.\n';return s+'\nشكراً لمجهودك 🌹'}
-function msg(mode){var t=mode==='pay'?financialMsg():mode==='att'?attendanceMsg():financialMsg()+'\n--------------------\n'+attendanceMsg(),ic=ratIcon();return t+(ic?'\n\n'+ic:'')}
-function repR(){var e=emp(RE);if(!e)return;var c=cyc(),l=xl(RE,c),t=l.reduce(function(a,x){return a+x.amt},0),ds=attendanceDays(RE,c),ls=monthLeaves(RE),T=dsTot(ds),di=dedInfo(RE,c);
+function msg(mode){var t=mode==='pay'?financialMsg()+'\n--------------------\n'+attendanceMsg():attendanceMsg(),ic=ratIcon();return t+(ic?'\n\n'+ic:'')}
+function repR(){var e=emp(RE);if(!e)return;var c=cyc(),l=xl(RE,c),t=l.reduce(function(a,x){return a+x.amt},0),md=totalDeduct(RE,c,dedInfo(RE,c).amt),ds=attendanceDays(RE,c),ls=monthLeaves(RE),T=dsTot(ds),di=dedInfo(RE,c);
  $('t4').textContent='تقرير الموظف: '+e.name;renderRI();
  var attT=ds.length?attTbl(ds,0,1):'<div class="empty">لا توجد سجلات حضور لهذا الشهر</div>';
  var exR=l.length?'<div class="attwrap"><table class="attTable"><thead><tr><th>التاريخ</th><th>سبب الإضافي</th><th>الساعات</th><th>القيمة</th></tr></thead><tbody>'+l.map(function(x){return '<tr><td>'+esc(x.date)+'</td><td>'+esc(x.why)+'</td><td>'+esc(x.hrs||0)+'</td><td>'+fm(x.amt)+'</td></tr>'}).join('')+'</tbody></table></div>':'<div class="empty">لا يوجد إضافي مالي هذا الشهر</div>';
  var lvR=ls.length?'<div class="attwrap"><table class="attTable"><thead><tr><th>النوع</th><th>من</th><th>إلى</th><th>ملاحظات</th></tr></thead><tbody>'+ls.map(function(x){return '<tr><td>'+esc(x.type)+'</td><td>'+esc(x.from)+'</td><td>'+esc(x.to)+'</td><td>'+esc(x.note||'—')+'</td></tr>'}).join('')+'</tbody></table></div>':'<div class="sub">لا توجد إجازات مسجلة خلال الشهر</div>';
- $('rb').innerHTML='<div class="stats"><div class="st"><b>'+ds.length+'</b><span>أيام مسجلة</span></div><div class="st"><b>'+durText(T.late)+'</b><span>إجمالي التأخير</span></div><div class="st"><b>'+sdurH(T.diff)+'</b><span>صافي الفرق (±)</span></div></div><div class="stats"><div class="st"><b>'+fm(t)+'</b><span>قيمة الإضافي</span></div><div class="st"><b style="color:var(--bad)">'+(di.amt?'-'+fm(di.amt):'0')+'</b><span>الخصم'+(di.txt?' ('+esc(di.txt)+')':'')+'</span></div><div class="st"><b>'+fm(+e.salary+t-di.amt)+'</b><span>الصافي المستحق</span></div></div><h3>تفاصيل الحضور</h3>'+attT+'<h3>الإضافي المالي</h3>'+exR+'<h3>الإجازات</h3>'+lvR+'<div class="h"><div>المرتب الأساسي</div><b>'+fm(e.salary)+'</b></div><div class="net">الإجمالي المستحق<b>'+fm(+e.salary+t-di.amt)+'</b><span class="sub">قيمة الساعة '+fm(Math.round(di.rate))+' · سياسة الخصم: '+({late:'التأخير',diff:'النقص في ساعات العمل',none:'بدون'}[S.dedPolicy]||'بدون')+'</span></div>';
+ $('rb').innerHTML='<div class="stats"><div class="st"><b>'+ds.length+'</b><span>أيام مسجلة</span></div><div class="st"><b>'+durText(T.late)+'</b><span>إجمالي التأخير</span></div><div class="st"><b>'+sdurH(T.diff)+'</b><span>صافي الفرق (±)</span></div></div><div class="stats"><div class="st"><b>'+fm(t)+'</b><span>قيمة الإضافي</span></div><div class="st"><b style="color:var(--bad)">'+(di.amt?'-'+fm(di.amt):'0')+'</b><span>الخصم'+(di.txt?' ('+esc(di.txt)+')':'')+'</span></div><div class="st"><b>'+fm(+e.salary+t-di.amt)+'</b><span>الصافي المستحق</span></div></div><h3>تفاصيل الحضور</h3>'+attT+'<h3>الإضافي المالي</h3>'+exR+'<h3>الإجازات</h3>'+lvR+'<div class="h"><div>المرتب الأساسي</div><b>'+fm(e.salary)+'</b></div><div class="net">الإجمالي المستحق<b>'+fm(+e.salary+t-md)+'</b><span class="sub">قيمة الساعة '+fm(Math.round(di.rate))+' · سياسة الخصم: '+({late:'التأخير',diff:'النقص في ساعات العمل',none:'بدون'}[S.dedPolicy]||'بدون')+'</span></div>';
 }
 window.openRep=function(id){RE=id;$('rm').value=ck.replace(/-(\d)$/,'-0$1');repR();open_('ov4')};$('rm').onchange=repR;
 function sendWhats(mode){var e=emp(RE);if(!e.ph){al('سجّلي رقم واتساب الموظف من زر تعديل أولاً');return}var text=msg(mode).normalize('NFC'),mob=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent),base=mob?'https://api.whatsapp.com/send?phone=':'https://web.whatsapp.com/send?phone=';
  try{navigator.clipboard.writeText(text)}catch(x){}
  window.open(base+e.ph+'&text='+encodeURIComponent(text),'_blank');lg('إرسال تقرير واتساب ('+mode+'): '+e.name+' · '+$('rm').value);save();toast('تم فتح واتساب','لو الرمز ظهر علامة استفهام، الصقي الرسالة المنسوخة (لصق) مكانها')}
 window.shareTxt=function(){var t=msg('all').normalize('NFC');if(navigator.share){navigator.share({text:t}).catch(function(){})}else{try{navigator.clipboard.writeText(t);toast('تم النسخ','الصقي الرسالة في واتساب')}catch(x){al(t)}}};
-$('rsPay').onclick=function(){sendWhats('pay')};$('rsAtt').onclick=function(){sendWhats('att')};$('rsAll').onclick=function(){sendWhats('all')};
-$('rc').onclick=function(){var t=msg('all');try{navigator.clipboard.writeText(t).then(function(){toast('تم النسخ','تم نسخ التقرير الكامل')}).catch(function(){al(t)})}catch(x){al(t)}};
+$('rsPay').onclick=function(){sendWhats('pay')};$('rsAtt').onclick=function(){sendWhats('att')};
 window.dx=function(id){var x=S.x.filter(function(z){return z.id===id})[0];if(!x)return;cf('حذف هذا الإضافي؟',function(){S.x=S.x.filter(function(z){return z.id!==id});lg('حذف إضافي: '+emp(RE).name+' · '+x.why+' · '+fm(x.amt));save();repR();render()})};
 var LE=null;
 window.openLeave=function(id){LE=id;var e=emp(id);if(!e)return;$('t6').textContent='إجازة الموظف: '+e.name;$('lvType').value='سنوية';$('lvFrom').value=td();$('lvTo').value=td();$('lvNote').value='';leaveRender();open_('ov6')};
@@ -373,15 +382,15 @@ window.deleteLeave=function(id){cf('حذف الإجازة المسجلة؟',func
 function repRIfOpen(){if($('ov4').classList.contains('on')&&RE)repR()}
 function renderRI(){var c=ratIcon();$('rIcons').innerHTML=ICONS.map(function(i){return '<button type="button" class="ic'+(c===i?' on':'')+'" onclick="setRat(\''+i+'\')"><span>'+i+'</span></button>'}).join('')}
 window.setRat=function(i){var k=RE+'|'+cyc();if(S.rating[k]===i)delete S.rating[k];else S.rating[k]=i;lg('رمز تقدير '+(S.rating[k]||'(بدون)')+' للموظف '+emp(RE).name);save();renderRI()};
-function pdfHTML(){var e=emp(RE),c=cyc(),l=xl(RE,c),t=l.reduce(function(a,x){return a+x.amt},0),ds=attendanceDays(RE,c),ls=monthLeaves(RE),ic=ratIcon(),di=dedInfo(RE,c);
+function pdfHTML(){var e=emp(RE),c=cyc(),l=xl(RE,c),t=l.reduce(function(a,x){return a+x.amt},0),md=totalDeduct(RE,c,dedInfo(RE,c).amt),ds=attendanceDays(RE,c),ls=monthLeaves(RE),ic=ratIcon(),di=dedInfo(RE,c);
  function tb(h,rows){return '<table><thead><tr>'+h.map(function(x){return '<th>'+x+'</th>'}).join('')+'</tr></thead><tbody>'+rows.map(function(r){return '<tr>'+r.map(function(x){return '<td>'+x+'</td>'}).join('')+'</tr>'}).join('')+'</tbody></table>'}
  var h='<div class="pt"><img src="'+$('hl').src+'"><div><div class="pttl">تقرير الموظف</div><div>'+esc(e.name)+(e.job?' · '+esc(e.job):'')+'</div><div>'+esc(monthName())+'</div></div></div>';
- h+='<h2>المرتب</h2>'+tb(['المرتب الأساسي','الإضافي المالي','الخصم','الإجمالي المستحق'],[[fm(e.salary),fm(t),di.amt?'-'+fm(di.amt):'0',fm(+e.salary+t-di.amt)]]);
+ h+='<h2>المرتب</h2>'+tb(['المرتب الأساسي','الإضافي المالي','الخصومات / السلف','الإجمالي المستحق'],[[fm(e.salary),fm(t),md?'-'+fm(md):'0',fm(+e.salary+t-md)]]);
  if(di.amt)h+='<div style="margin-top:6px;font-size:12px">سبب الخصم: '+esc(di.txt)+' (قيمة الساعة '+fm(Math.round(di.rate))+')</div>';
  if(l.length)h+='<h2>الإضافي المالي</h2>'+tb(['التاريخ','السبب','الساعات','القيمة'],l.map(function(x){return [esc(x.date),esc(x.why),esc(x.hrs||0),fm(x.amt)]}));
  if(ds.length)h+='<h2>الحضور والانصراف</h2>'+attTbl(ds,0,1,1);
  if(ls.length)h+='<h2>الإجازات</h2>'+tb(['النوع','من','إلى','ملاحظات'],ls.map(function(x){return [esc(x.type),esc(x.from),esc(x.to),esc(x.note||'—')]}));
- h+='<div class="tot">الإجمالي المستحق: '+fm(+e.salary+t-di.amt)+'</div>';
+ h+='<div class="tot">الإجمالي المستحق: '+fm(+e.salary+t-md)+'</div>';
  if(ic)h+='<div class="sym">'+ic+'</div>';
  return h}
 function loadLib(src,chk){return new Promise(function(ok,no){if(chk())return ok();var s=document.createElement('script');s.src=src;s.onload=ok;s.onerror=function(){no(new Error('lib'))};document.head.appendChild(s)})}
